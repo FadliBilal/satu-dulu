@@ -215,14 +215,14 @@ export const PlanningView: React.FC = () => {
   return (
     <div className="w-full max-w-3xl mx-auto py-2 sm:py-6">
       {/* Date Switcher Tabs */}
-      <div className="inline-flex p-1 bg-slate-100/90 rounded-xl border border-slate-200/80 mb-4">
+      <div className="inline-flex p-1 bg-slate-100/90 dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 mb-4">
         <button
           type="button"
           onClick={() => handleSwitchTargetMode("today")}
           className={`px-3 py-1 text-xs font-medium rounded-lg transition-all ${
             targetDateMode === "today"
-              ? "bg-white text-slate-900 shadow-xs font-semibold"
-              : "text-slate-500 hover:text-slate-900"
+              ? "bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 shadow-xs font-semibold"
+              : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
           }`}
         >
           Hari Ini ({todayDate})
@@ -232,8 +232,8 @@ export const PlanningView: React.FC = () => {
           onClick={() => handleSwitchTargetMode("tomorrow")}
           className={`px-3 py-1 text-xs font-medium rounded-lg transition-all ${
             targetDateMode === "tomorrow"
-              ? "bg-white text-slate-900 shadow-xs font-semibold"
-              : "text-slate-500 hover:text-slate-900"
+              ? "bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 shadow-xs font-semibold"
+              : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
           }`}
         >
           Besok ({tomorrowDate})
@@ -242,27 +242,27 @@ export const PlanningView: React.FC = () => {
 
       {/* Header */}
       <div className="mb-6">
-        <span className="text-[11px] font-semibold text-satublue-700 tracking-wider uppercase font-mono">
+        <span className="text-[11px] font-semibold text-satublue-700 dark:text-sky-400 tracking-wider uppercase font-mono">
           PERENCANAAN • {activeDate}
         </span>
-        <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-slate-900 mt-1">
+        <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 mt-1">
           {targetDateMode === "today" ? "Apa yang penting hari ini?" : "Apa yang penting besok?"}
         </h1>
-        <p className="text-xs text-slate-500 mt-1">
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
           Pilih 1–4 komitmen realistis. Angka 6 adalah batas aman, bukan target.
         </p>
       </div>
 
       {/* Adaptive Calibration Ribbon */}
       {calibration && (
-        <div className="mb-6 p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+        <div className="mb-6 p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/90 shadow-xs">
           <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-lg bg-satublue-50 border border-satublue-100 flex items-center justify-center text-satublue-700 shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-satublue-50 dark:bg-blue-950/70 border border-satublue-100 dark:border-blue-800 flex items-center justify-center text-satublue-700 dark:text-sky-400 shrink-0">
               <Sliders className="w-4 h-4" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-slate-900">
+                <span className="text-xs font-semibold text-slate-900 dark:text-slate-100">
                   Ritme Anda
                 </span>
                 <Badge
@@ -281,10 +281,10 @@ export const PlanningView: React.FC = () => {
                     : "Terlalu Banyak"}
                 </Badge>
               </div>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                 {calibration.rhythmDescription}
               </p>
-              <p className="text-xs font-medium text-slate-800 mt-1">
+              <p className="text-xs font-medium text-slate-800 dark:text-slate-200 mt-1">
                 {calibration.message}
               </p>
             </div>
@@ -295,9 +295,9 @@ export const PlanningView: React.FC = () => {
       {/* Selected Commitments (Order & Priority) */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+          <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2">
             <span>{targetDateMode === "today" ? "Komitmen Hari Ini" : "Komitmen Besok"}</span>
-            <span className="text-xs font-normal text-satublue-700 bg-satublue-50 px-2 py-0.5 rounded font-mono">
+            <span className="text-xs font-normal text-satublue-700 dark:text-sky-300 bg-satublue-50 dark:bg-blue-950/70 px-2 py-0.5 rounded font-mono">
               {selectedIds.length} dari maks 6
             </span>
           </h3>
@@ -309,14 +309,14 @@ export const PlanningView: React.FC = () => {
               onClick={() => setShowPairwise(true)}
               className="text-xs py-1"
             >
-              <ArrowUpDown className="w-3.5 h-3.5 mr-1 text-satublue-600" />
+              <ArrowUpDown className="w-3.5 h-3.5 mr-1 text-satublue-600 dark:text-sky-400" />
               Urutkan dengan Pairwise
             </Button>
           )}
         </div>
 
         {selectedIds.length === 0 ? (
-          <div className="p-6 text-center border border-dashed border-slate-200 rounded-xl bg-slate-50/50 text-xs text-slate-400">
+          <div className="p-6 text-center border border-dashed border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50/50 dark:bg-slate-900/40 text-xs text-slate-400 dark:text-slate-500">
             Belum ada komitmen yang dipilih. Pilih dari kandidat di bawah.
           </div>
         ) : (
@@ -324,18 +324,18 @@ export const PlanningView: React.FC = () => {
             {selectedCandidateObjects.map((item, index) => (
               <div
                 key={item.id}
-                className="flex items-center justify-between p-3.5 bg-white border border-slate-200 rounded-xl shadow-xs"
+                className="flex items-center justify-between p-3.5 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xs"
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <span className="w-6 h-6 rounded-full bg-satublue-600 text-white text-xs font-mono font-semibold flex items-center justify-center shrink-0">
                     {index + 1}
                   </span>
                   <div className="min-w-0">
-                    <h4 className="text-sm font-medium text-slate-900 truncate">
+                    <h4 className="text-sm font-medium text-slate-900 dark:text-slate-100 truncate">
                       {item.title}
                     </h4>
                     {item.why_it_matters && (
-                      <p className="text-xs text-slate-500 truncate">
+                      <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
                         {item.why_it_matters}
                       </p>
                     )}
@@ -346,7 +346,7 @@ export const PlanningView: React.FC = () => {
                   <button
                     disabled={index === 0}
                     onClick={() => movePriority(index, "up")}
-                    className="p-1 text-slate-400 hover:text-satublue-700 disabled:opacity-20"
+                    className="p-1 text-slate-400 dark:text-slate-500 hover:text-satublue-700 dark:hover:text-sky-400 disabled:opacity-20"
                     title="Naikkan urutan"
                   >
                     ↑
@@ -354,7 +354,7 @@ export const PlanningView: React.FC = () => {
                   <button
                     disabled={index === selectedIds.length - 1}
                     onClick={() => movePriority(index, "down")}
-                    className="p-1 text-slate-400 hover:text-satublue-700 disabled:opacity-20"
+                    className="p-1 text-slate-400 dark:text-slate-500 hover:text-satublue-700 dark:hover:text-sky-400 disabled:opacity-20"
                     title="Turunkan urutan"
                   >
                     ↓
@@ -374,12 +374,12 @@ export const PlanningView: React.FC = () => {
 
       {/* Candidates Pool (Inbox & Carried Forward) */}
       <div className="mb-10">
-        <h3 className="text-sm font-semibold text-slate-900 mb-3">
+        <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">
           Kandidat yang Tersedia
         </h3>
 
         {candidates.length === 0 ? (
-          <div className="p-6 text-center border border-slate-200 rounded-xl bg-white text-xs text-slate-400">
+          <div className="p-6 text-center border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900/90 text-xs text-slate-400 dark:text-slate-500">
             Inbox Anda tidak memiliki tugas yang tertunda.
           </div>
         ) : (
@@ -392,8 +392,8 @@ export const PlanningView: React.FC = () => {
                   onClick={() => toggleCandidate(cand.id)}
                   className={`p-3.5 rounded-xl border transition-all cursor-pointer flex items-center justify-between ${
                     isSelected
-                      ? "bg-satublue-50/60 border-satublue-300 shadow-xs"
-                      : "bg-white border-slate-200/90 hover:border-satublue-200"
+                      ? "bg-satublue-50/60 dark:bg-blue-950/40 border-satublue-300 dark:border-blue-700 shadow-xs"
+                      : "bg-white dark:bg-slate-900/90 border-slate-200/90 dark:border-slate-800 hover:border-satublue-200 dark:hover:border-satublue-700"
                   }`}
                 >
                   <div className="flex items-center gap-3 min-w-0">
@@ -401,14 +401,14 @@ export const PlanningView: React.FC = () => {
                       className={`w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${
                         isSelected
                           ? "bg-satublue-600 border-satublue-600 text-white"
-                          : "border-slate-300 bg-white"
+                          : "border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800"
                       }`}
                     >
                       {isSelected && <Check className="w-3.5 h-3.5" />}
                     </div>
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
-                        <h4 className="text-sm font-medium text-slate-900 truncate">
+                        <h4 className="text-sm font-medium text-slate-900 dark:text-slate-100 truncate">
                           {cand.title}
                         </h4>
                         {cand.rollover_count && cand.rollover_count > 0 ? (
@@ -416,14 +416,14 @@ export const PlanningView: React.FC = () => {
                         ) : null}
                       </div>
                       {cand.why_it_matters && (
-                        <p className="text-xs text-slate-500 truncate mt-0.5">
+                        <p className="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">
                           {cand.why_it_matters}
                         </p>
                       )}
                     </div>
                   </div>
 
-                  <span className="text-xs font-mono text-slate-400 ml-2 shrink-0">
+                  <span className="text-xs font-mono text-slate-400 dark:text-slate-500 ml-2 shrink-0">
                     {cand.estimated_duration || 30}m
                   </span>
                 </div>
@@ -434,13 +434,13 @@ export const PlanningView: React.FC = () => {
       </div>
 
       {/* Confirmation & Commit Button (Fixed Bottom Bar with safe mobile spacing) */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/95 backdrop-blur-md border-t border-slate-200 z-30 mb-14 md:mb-0">
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 z-30 mb-14 md:mb-0">
         <div className="max-w-2xl mx-auto flex items-center justify-between gap-4">
           <div>
-            <span className="text-xs font-medium text-slate-900 block">
+            <span className="text-xs font-medium text-slate-900 dark:text-slate-100 block">
               {selectedIds.length} komitmen dipilih
             </span>
-            <span className="text-[11px] text-slate-500 hidden sm:inline-block">
+            <span className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:inline-block">
               Rencana menjadi panduan eksekusi setelah Anda berkomitmen.
             </span>
           </div>

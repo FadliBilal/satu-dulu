@@ -88,24 +88,24 @@ export const PairwiseModal: React.FC<PairwiseModalProps> = ({
           <button
             type="button"
             onClick={() => handleSelectWinner(currentPair.itemA.id)}
-            className="text-left p-5 rounded-xl border border-gray-200 hover:border-satutext-primary bg-satubg-light hover:bg-white transition-all group flex flex-col justify-between min-h-[160px] focus:outline-none focus:ring-2 focus:ring-satutext-primary"
+            className="text-left p-5 rounded-xl border border-gray-200 dark:border-slate-800 hover:border-satublue-600 dark:hover:border-satublue-500 bg-satubg-light dark:bg-slate-900/90 hover:bg-white dark:hover:bg-slate-800 transition-all group flex flex-col justify-between min-h-[160px] focus:outline-none focus:ring-2 focus:ring-satublue-500 shadow-xs"
           >
             <div>
-              <span className="text-[10px] font-semibold text-satutext-muted uppercase tracking-wider block mb-1">
+              <span className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider block mb-1 font-mono">
                 PILIHAN A
               </span>
-              <h4 className="text-base font-semibold text-satutext-primary group-hover:text-satutext-primary leading-snug">
+              <h4 className="text-base font-semibold text-slate-900 dark:text-slate-100 group-hover:text-satublue-600 dark:group-hover:text-satublue-400 leading-snug">
                 {currentPair.itemA.title}
               </h4>
               {currentPair.itemA.why_it_matters && (
-                <p className="text-xs text-satutext-secondary mt-2 line-clamp-3">
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-2 line-clamp-3">
                   {currentPair.itemA.why_it_matters}
                 </p>
               )}
             </div>
-            <div className="pt-4 flex items-center justify-between text-xs text-satutext-muted border-t border-gray-100/80 mt-3">
+            <div className="pt-4 flex items-center justify-between text-xs text-slate-400 dark:text-slate-500 border-t border-gray-100 dark:border-slate-800 mt-3">
               <span>{currentPair.itemA.estimated_duration || 30} menit</span>
-              <span className="font-semibold text-satutext-primary group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+              <span className="font-semibold text-satublue-600 dark:text-sky-400 group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
                 Pilih <ArrowRight className="w-3.5 h-3.5" />
               </span>
             </div>
@@ -115,31 +115,31 @@ export const PairwiseModal: React.FC<PairwiseModalProps> = ({
           <button
             type="button"
             onClick={() => handleSelectWinner(currentPair.itemB.id)}
-            className="text-left p-5 rounded-xl border border-gray-200 hover:border-satutext-primary bg-satubg-light hover:bg-white transition-all group flex flex-col justify-between min-h-[160px] focus:outline-none focus:ring-2 focus:ring-satutext-primary"
+            className="text-left p-5 rounded-xl border border-gray-200 dark:border-slate-800 hover:border-satublue-600 dark:hover:border-satublue-500 bg-satubg-light dark:bg-slate-900/90 hover:bg-white dark:hover:bg-slate-800 transition-all group flex flex-col justify-between min-h-[160px] focus:outline-none focus:ring-2 focus:ring-satublue-500 shadow-xs"
           >
             <div>
-              <span className="text-[10px] font-semibold text-satutext-muted uppercase tracking-wider block mb-1">
+              <span className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider block mb-1 font-mono">
                 PILIHAN B
               </span>
-              <h4 className="text-base font-semibold text-satutext-primary group-hover:text-satutext-primary leading-snug">
+              <h4 className="text-base font-semibold text-slate-900 dark:text-slate-100 group-hover:text-satublue-600 dark:group-hover:text-satublue-400 leading-snug">
                 {currentPair.itemB.title}
               </h4>
               {currentPair.itemB.why_it_matters && (
-                <p className="text-xs text-satutext-secondary mt-2 line-clamp-3">
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-2 line-clamp-3">
                   {currentPair.itemB.why_it_matters}
                 </p>
               )}
             </div>
-            <div className="pt-4 flex items-center justify-between text-xs text-satutext-muted border-t border-gray-100/80 mt-3">
+            <div className="pt-4 flex items-center justify-between text-xs text-slate-400 dark:text-slate-500 border-t border-gray-100 dark:border-slate-800 mt-3">
               <span>{currentPair.itemB.estimated_duration || 30} menit</span>
-              <span className="font-semibold text-satutext-primary group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+              <span className="font-semibold text-satublue-600 dark:text-sky-400 group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
                 Pilih <ArrowRight className="w-3.5 h-3.5" />
               </span>
             </div>
           </button>
         </div>
 
-        <p className="text-center text-[11px] text-satutext-muted">
+        <p className="text-center text-[11px] text-slate-400 dark:text-slate-500">
           Pilih komitmen yang memiliki dampak atau urgensi lebih tinggi untuk besok.
         </p>
       </div>

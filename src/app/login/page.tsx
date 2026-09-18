@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <main className="min-h-screen bg-satubg-light flex items-center justify-center p-4">
+    <main className="min-h-screen bg-satubg-light dark:bg-satubg-dark flex items-center justify-center p-4">
       <AuthView />
     </main>
   );

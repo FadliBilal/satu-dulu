@@ -91,7 +91,7 @@ export const Logo: React.FC<LogoProps> = ({
 
       {showText && (
         <div className="flex items-center gap-1.5">
-          <span className={`font-bold tracking-tight text-slate-900 ${textClasses[textSize]}`}>
+          <span className={`font-bold tracking-tight text-slate-900 dark:text-white ${textClasses[textSize]}`}>
             SATUDULU
           </span>
         </div>

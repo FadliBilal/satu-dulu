@@ -34,6 +34,7 @@ const config: Config = {
           700: "#1E40AF",
           800: "#1E3A8A",
           900: "#172554",
+          950: "#0B1938",
         },
         satuaccent: {
           DEFAULT: "#1E3A8A",

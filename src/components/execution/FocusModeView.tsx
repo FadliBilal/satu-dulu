@@ -84,12 +84,12 @@ export const FocusModeView: React.FC<FocusModeViewProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-satubg-light flex flex-col justify-between p-6 sm:p-12 selection:bg-satublue-100">
+    <div className="fixed inset-0 z-50 bg-satubg-light dark:bg-[#090D16] flex flex-col justify-between p-6 sm:p-12 selection:bg-satublue-100 dark:selection:bg-satublue-900 text-slate-900 dark:text-slate-100">
       {/* Top Bar */}
       <div className="flex items-center justify-between max-w-2xl mx-auto w-full">
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-satublue-600 animate-pulse" />
-          <span className="text-xs font-mono text-satublue-900 uppercase tracking-wider font-semibold">
+          <span className="w-2 h-2 rounded-full bg-satublue-600 dark:bg-sky-400 animate-pulse" />
+          <span className="text-xs font-mono text-satublue-900 dark:text-sky-300 uppercase tracking-wider font-semibold">
             MODE FOKUS • SINGLE THREAD
           </span>
         </div>
@@ -101,7 +101,7 @@ export const FocusModeView: React.FC<FocusModeViewProps> = ({
               className={`text-xs px-2.5 py-1.5 rounded-lg border transition-colors flex items-center gap-1.5 ${
                 isPipOn
                   ? "bg-satublue-600 text-white border-satublue-600"
-                  : "bg-white text-slate-600 border-slate-200 hover:text-satublue-700 hover:border-satublue-300"
+                  : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:text-satublue-700 dark:hover:text-satublue-300 hover:border-satublue-300 dark:hover:border-satublue-700"
               }`}
               title="Aktifkan timer melayang (Picture-in-Picture) di atas aplikasi lain"
             >
@@ -112,7 +112,7 @@ export const FocusModeView: React.FC<FocusModeViewProps> = ({
 
           <button
             onClick={handleExit}
-            className="text-slate-400 hover:text-slate-700 p-2 rounded-lg transition-colors flex items-center gap-1 text-xs"
+            className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 p-2 rounded-lg transition-colors flex items-center gap-1 text-xs"
             aria-label="Keluar dari mode fokus"
           >
             <X className="w-4 h-4" />
@@ -123,26 +123,26 @@ export const FocusModeView: React.FC<FocusModeViewProps> = ({
 
       {/* Center Focus Element */}
       <div className="max-w-xl mx-auto w-full text-center my-auto py-12">
-        <span className="text-xs font-semibold text-satublue-700 uppercase tracking-wider block mb-3 font-mono">
+        <span className="text-xs font-semibold text-satublue-700 dark:text-sky-400 uppercase tracking-wider block mb-3 font-mono">
           KOMITMEN SAAT INI
         </span>
 
-        <h1 className="text-3xl sm:text-4xl font-semibold text-slate-900 tracking-tight leading-snug mb-4">
+        <h1 className="text-3xl sm:text-4xl font-semibold text-slate-900 dark:text-slate-100 tracking-tight leading-snug mb-4">
           {commitment.title}
         </h1>
 
         {commitment.why_it_matters && (
-          <p className="text-sm sm:text-base text-slate-600 max-w-md mx-auto mb-10 font-normal">
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-md mx-auto mb-10 font-normal">
             {commitment.why_it_matters}
           </p>
         )}
 
         {/* Stopwatch Display */}
         <div className="mb-10">
-          <div className="text-5xl sm:text-7xl font-mono font-medium tracking-tight text-slate-900 mb-2">
+          <div className="text-5xl sm:text-7xl font-mono font-medium tracking-tight text-slate-900 dark:text-slate-100 mb-2">
             {formatTime(seconds)}
           </div>
-          <span className="text-xs text-slate-400">
+          <span className="text-xs text-slate-400 dark:text-slate-500">
             {isActive ? "Penghitung fokus aktif" : "Penghitung waktu dijeda"}
           </span>
         </div>
@@ -181,7 +181,7 @@ export const FocusModeView: React.FC<FocusModeViewProps> = ({
       </div>
 
       {/* Bottom context: Supporting context only */}
-      <div className="text-center text-xs text-slate-400 max-w-md mx-auto">
+      <div className="text-center text-xs text-slate-400 dark:text-slate-500 max-w-md mx-auto">
         <span>Estimasi: {commitment.estimated_duration} menit. Eksekusi mendalam sedang berjalan.</span>
       </div>
     </div>

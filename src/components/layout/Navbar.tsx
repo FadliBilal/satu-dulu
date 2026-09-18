@@ -141,21 +141,21 @@ export const Navbar: React.FC = () => {
         <div className="flex items-center gap-1 sm:gap-2">
           {/* Momentum Badge */}
           <div
-            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-satublue-50 dark:bg-satublue-950/70 border border-satublue-200/80 dark:border-satublue-800 shadow-xs"
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-satublue-50 dark:bg-blue-950/70 border border-satublue-200/80 dark:border-blue-800/80 shadow-xs"
             title="Skor Momentum Eksekusi"
           >
-            <span className="w-2 h-2 rounded-full bg-satublue-600 animate-pulse" />
-            <span className="text-xs font-semibold text-satublue-900 dark:text-satublue-200 font-mono">
+            <span className="w-2 h-2 rounded-full bg-satublue-600 dark:bg-sky-400 animate-pulse" />
+            <span className="text-xs font-semibold text-satublue-900 dark:text-sky-200 font-mono">
               {momentum}
             </span>
-            <span className="text-[10px] text-satublue-700 dark:text-satublue-400 font-mono hidden sm:inline">
+            <span className="text-[10px] text-satublue-700 dark:text-sky-400 font-mono hidden sm:inline">
               MOMENTUM
             </span>
           </div>
 
           {/* Date pill (XL screens only) */}
           {currentDateStr && (
-            <span className="hidden xl:inline-block text-xs font-mono text-slate-500 dark:text-slate-400 bg-slate-100/80 dark:bg-slate-900 px-2.5 py-1 rounded-lg border border-transparent dark:border-slate-800/60">
+            <span className="hidden xl:inline-block text-xs font-mono text-slate-500 dark:text-slate-300 bg-slate-100/80 dark:bg-slate-800/80 px-2.5 py-1 rounded-lg border border-transparent dark:border-slate-700/60">
               {currentDateStr}
             </span>
           )}

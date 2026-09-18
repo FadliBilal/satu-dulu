@@ -46,19 +46,19 @@ export const LandingPage: React.FC = () => {
           <div className="hidden sm:flex items-center gap-1">
             <Link
               href="#loop"
-              className="text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-satublue-700 dark:hover:text-satublue-400 hover:bg-slate-100/60 dark:hover:bg-slate-800/60 px-3 py-1.5 rounded-full transition-colors"
+              className="text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-satublue-700 dark:hover:text-satublue-400 hover:bg-slate-100/60 dark:hover:bg-slate-800/60 px-3 py-1.5 rounded-full transition-colors whitespace-nowrap"
             >
               Cara Kerja
             </Link>
             <Link
               href="#riset"
-              className="text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-satublue-700 dark:hover:text-satublue-400 hover:bg-slate-100/60 dark:hover:bg-slate-800/60 px-3 py-1.5 rounded-full transition-colors"
+              className="text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-satublue-700 dark:hover:text-satublue-400 hover:bg-slate-100/60 dark:hover:bg-slate-800/60 px-3 py-1.5 rounded-full transition-colors whitespace-nowrap"
             >
               Dasar Riset
             </Link>
             <Link
               href="/guide"
-              className="text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-satublue-700 dark:hover:text-satublue-400 hover:bg-slate-100/60 dark:hover:bg-slate-800/60 px-3 py-1.5 rounded-full transition-colors"
+              className="text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-satublue-700 dark:hover:text-satublue-400 hover:bg-slate-100/60 dark:hover:bg-slate-800/60 px-3 py-1.5 rounded-full transition-colors whitespace-nowrap"
             >
               Panduan
             </Link>
@@ -70,7 +70,7 @@ export const LandingPage: React.FC = () => {
             <button
               type="button"
               onClick={toggleTheme}
-              className="p-1.5 rounded-full text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="p-1.5 rounded-full text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shrink-0"
               aria-label="Toggle tema"
               title={resolvedTheme === "dark" ? "Beralih ke Tema Terang" : "Beralih ke Tema Gelap"}
             >
@@ -101,8 +101,8 @@ export const LandingPage: React.FC = () => {
       {/* Hero Section */}
       <section className="pt-24 sm:pt-36 md:pt-40 pb-16 px-4 sm:px-6 max-w-4xl mx-auto text-center relative">
         {/* Subtle pill tag */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-satublue-200 dark:border-satublue-800/80 text-[11px] sm:text-xs text-satublue-900 dark:text-satublue-300 mb-6 sm:mb-8 font-medium shadow-xs max-w-full">
-          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-satublue-600 animate-pulse shrink-0" />
+        <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-satublue-50/90 dark:bg-blue-950/70 backdrop-blur-md border border-satublue-200 dark:border-blue-800/80 text-[11px] sm:text-xs text-satublue-900 dark:text-sky-200 mb-6 sm:mb-8 font-medium shadow-xs max-w-full">
+          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-satublue-600 dark:bg-sky-400 animate-pulse shrink-0" />
           <span className="truncate">Sistem Eksekusi Personal Berbasis Riset Kognitif</span>
         </div>
 

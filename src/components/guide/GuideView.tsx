@@ -10,8 +10,8 @@ export const GuideView: React.FC = () => {
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 pb-28">
       {/* Header */}
       <div className="mb-8">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-satublue-50 dark:bg-satublue-950/70 border border-satublue-200 dark:border-satublue-800 text-xs text-satublue-800 dark:text-satublue-300 mb-2.5 font-medium">
-          <BookOpen className="w-3.5 h-3.5 text-satublue-600 dark:text-satublue-400" />
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-satublue-50 dark:bg-blue-950/70 border border-satublue-200 dark:border-blue-800 text-xs text-satublue-800 dark:text-sky-300 mb-2.5 font-medium">
+          <BookOpen className="w-3.5 h-3.5 text-satublue-600 dark:text-sky-400" />
           <span>Panduan Singkat</span>
         </div>
         <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
@@ -24,14 +24,14 @@ export const GuideView: React.FC = () => {
 
       {/* 3 Langkah Eksekusi */}
       <div className="mb-10">
-        <h2 className="text-sm font-semibold text-satublue-700 dark:text-satublue-400 uppercase tracking-wider font-mono mb-4">
+        <h2 className="text-sm font-semibold text-satublue-600 dark:text-sky-400 uppercase tracking-wider font-mono mb-4">
           3 Langkah Harian
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="p-5 bg-white dark:bg-slate-900/90 border-slate-200/90 dark:border-slate-800 rounded-2xl flex flex-col justify-between shadow-xs">
             <div>
-              <div className="w-8 h-8 rounded-xl bg-satublue-50 dark:bg-satublue-950/70 text-satublue-700 dark:text-satublue-300 flex items-center justify-center font-mono font-bold text-xs border border-satublue-100 dark:border-satublue-800 mb-3">
+              <div className="w-8 h-8 rounded-xl bg-satublue-50 dark:bg-blue-950/70 text-satublue-700 dark:text-sky-300 flex items-center justify-center font-mono font-bold text-xs border border-satublue-100 dark:border-blue-800 mb-3">
                 01
               </div>
               <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-1.5">
@@ -41,14 +41,14 @@ export const GuideView: React.FC = () => {
                 Tulis ide atau tugas tanpa beban menyortir. Gunakan <strong>Klarifikasi AI</strong> gratis untuk memecahnya jadi aksi 25–60 menit.
               </p>
             </div>
-            <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] text-satublue-600 dark:text-satublue-400 font-medium">
+            <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] text-satublue-600 dark:text-sky-400 font-medium">
               Inbox • Klarifikasi Cepat
             </div>
           </Card>
 
           <Card className="p-5 bg-white dark:bg-slate-900/90 border-slate-200/90 dark:border-slate-800 rounded-2xl flex flex-col justify-between shadow-xs">
             <div>
-              <div className="w-8 h-8 rounded-xl bg-satublue-50 dark:bg-satublue-950/70 text-satublue-700 dark:text-satublue-300 flex items-center justify-center font-mono font-bold text-xs border border-satublue-100 dark:border-satublue-800 mb-3">
+              <div className="w-8 h-8 rounded-xl bg-satublue-50 dark:bg-blue-950/70 text-satublue-700 dark:text-sky-300 flex items-center justify-center font-mono font-bold text-xs border border-satublue-100 dark:border-blue-800 mb-3">
                 02
               </div>
               <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-1.5">
@@ -58,14 +58,14 @@ export const GuideView: React.FC = () => {
                 Pilih tugas via <strong>Pairwise</strong> untuk menentukan urutan esensial. Batas aman maksimal 6 tugas per hari.
               </p>
             </div>
-            <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] text-satublue-600 dark:text-satublue-400 font-medium">
+            <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] text-satublue-600 dark:text-sky-400 font-medium">
               Rencana • Urutan Esensial
             </div>
           </Card>
 
           <Card className="p-5 bg-white dark:bg-slate-900/90 border-slate-200/90 dark:border-slate-800 rounded-2xl flex flex-col justify-between shadow-xs">
             <div>
-              <div className="w-8 h-8 rounded-xl bg-satublue-50 dark:bg-satublue-950/70 text-satublue-700 dark:text-satublue-300 flex items-center justify-center font-mono font-bold text-xs border border-satublue-100 dark:border-satublue-800 mb-3">
+              <div className="w-8 h-8 rounded-xl bg-satublue-50 dark:bg-blue-950/70 text-satublue-700 dark:text-sky-300 flex items-center justify-center font-mono font-bold text-xs border border-satublue-100 dark:border-blue-800 mb-3">
                 03
               </div>
               <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-1.5">
@@ -75,7 +75,7 @@ export const GuideView: React.FC = () => {
                 Kerjakan <strong>Prioritas 01</strong>. Gunakan <strong>Timer Melayang (PiP)</strong> saat membuka aplikasi lain hingga tuntas.
               </p>
             </div>
-            <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] text-satublue-600 dark:text-satublue-400 font-medium">
+            <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] text-satublue-600 dark:text-sky-400 font-medium">
               Hari Ini • Bebas Gangguan
             </div>
           </Card>
@@ -84,7 +84,7 @@ export const GuideView: React.FC = () => {
 
       {/* Prinsip Desain Ringkas */}
       <div className="mb-10">
-        <h2 className="text-sm font-semibold text-satublue-700 dark:text-satublue-400 uppercase tracking-wider font-mono mb-4">
+        <h2 className="text-sm font-semibold text-satublue-600 dark:text-sky-400 uppercase tracking-wider font-mono mb-4">
           Prinsip Kunci
         </h2>
 
@@ -111,7 +111,7 @@ export const GuideView: React.FC = () => {
 
       {/* Tanya Jawab Singkat */}
       <div className="mb-10">
-        <h2 className="text-sm font-semibold text-satublue-700 dark:text-satublue-400 uppercase tracking-wider font-mono mb-4">
+        <h2 className="text-sm font-semibold text-satublue-600 dark:text-sky-400 uppercase tracking-wider font-mono mb-4">
           Pertanyaan Umum
         </h2>
 
@@ -132,7 +132,7 @@ export const GuideView: React.FC = () => {
           ].map((faq, idx) => (
             <div key={idx} className="p-4 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 shadow-xs">
               <h4 className="text-xs font-semibold text-slate-900 dark:text-slate-100 mb-1 flex items-center gap-2">
-                <HelpCircle className="w-3.5 h-3.5 text-satublue-600 dark:text-satublue-400 shrink-0" />
+                <HelpCircle className="w-3.5 h-3.5 text-satublue-600 dark:text-sky-400 shrink-0" />
                 <span>{faq.q}</span>
               </h4>
               <p className="text-xs text-slate-500 dark:text-slate-400 pl-5 leading-relaxed">

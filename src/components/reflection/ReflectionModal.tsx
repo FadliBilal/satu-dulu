@@ -60,12 +60,12 @@ export const ReflectionModal: React.FC<ReflectionModalProps> = ({
     >
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Outcome summary */}
-        <div className="p-3.5 bg-satubg-subtle rounded-xl text-center">
-          <span className="text-xs font-semibold text-satutext-primary block">
+        <div className="p-3.5 bg-satubg-subtle dark:bg-slate-800/80 rounded-xl text-center">
+          <span className="text-xs font-semibold text-satutext-primary dark:text-slate-100 block">
             {completedCount} dari {totalCount} komitmen tuntas.
           </span>
           {carriedCount > 0 && (
-            <span className="text-[11px] text-satutext-secondary mt-0.5 block">
+            <span className="text-[11px] text-satutext-secondary dark:text-slate-400 mt-0.5 block">
               {carriedCount} dialihkan untuk keputusan yang segar besok.
             </span>
           )}
@@ -73,7 +73,7 @@ export const ReflectionModal: React.FC<ReflectionModalProps> = ({
 
         {carriedCount > 0 ? (
           <div>
-            <label className="text-xs font-semibold text-satutext-primary block mb-2">
+            <label className="text-xs font-semibold text-satutext-primary dark:text-slate-100 block mb-2">
               Apa yang menghambat Anda hari ini?
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -84,8 +84,8 @@ export const ReflectionModal: React.FC<ReflectionModalProps> = ({
                   onClick={() => setSelectedReason(r.value)}
                   className={`p-2.5 rounded-lg border text-left text-xs transition-all ${
                     selectedReason === r.value
-                      ? "border-satutext-primary bg-white font-medium text-satutext-primary shadow-xs"
-                      : "border-gray-200 text-satutext-secondary hover:bg-white"
+                      ? "border-satutext-primary dark:border-sky-500 bg-white dark:bg-slate-800 font-medium text-satutext-primary dark:text-slate-100 shadow-xs"
+                      : "border-gray-200 dark:border-slate-800 text-satutext-secondary dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800/50"
                   }`}
                 >
                   {r.label}
@@ -94,13 +94,13 @@ export const ReflectionModal: React.FC<ReflectionModalProps> = ({
             </div>
           </div>
         ) : (
-          <p className="text-xs text-satutext-secondary text-center">
+          <p className="text-xs text-satutext-secondary dark:text-slate-400 text-center">
             Luar biasa, Anda menuntaskan semua komitmen yang Anda tetapkan hari ini.
           </p>
         )}
 
         <div>
-          <label className="text-xs font-semibold text-satutext-primary block mb-1">
+          <label className="text-xs font-semibold text-satutext-primary dark:text-slate-100 block mb-1">
             Catatan Tambahan (Opsional)
           </label>
           <input
@@ -108,11 +108,11 @@ export const ReflectionModal: React.FC<ReflectionModalProps> = ({
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Satu kalimat tentang eksekusi Anda hari ini..."
-            className="w-full px-3 py-2 text-xs rounded-lg border border-gray-200 focus:outline-none focus:ring-1 focus:ring-satutext-primary"
+            className="w-full px-3 py-2 text-xs rounded-lg bg-transparent dark:bg-slate-800/80 border border-gray-200 dark:border-slate-700 text-satutext-primary dark:text-slate-100 placeholder:text-satutext-muted dark:placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-satutext-primary dark:focus:ring-sky-500"
           />
         </div>
 
-        <div className="pt-2 flex items-center justify-end gap-2 border-t border-gray-100">
+        <div className="pt-2 flex items-center justify-end gap-2 border-t border-gray-100 dark:border-slate-800">
           <Button type="button" variant="ghost" size="sm" onClick={onClose}>
             Lewati
           </Button>

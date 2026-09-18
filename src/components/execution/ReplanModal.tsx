@@ -124,7 +124,7 @@ export const ReplanModal: React.FC<ReplanModalProps> = ({
       <div className="space-y-6">
         {/* What Changed Selector */}
         <div>
-          <label className="text-xs font-semibold text-satutext-primary block mb-2">
+          <label className="text-xs font-semibold text-satutext-primary dark:text-slate-100 block mb-2">
             Apa yang berubah?
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -135,8 +135,8 @@ export const ReplanModal: React.FC<ReplanModalProps> = ({
                 onClick={() => setReason(opt.value)}
                 className={`p-2.5 rounded-lg border text-left text-xs transition-all ${
                   reason === opt.value
-                    ? "border-satutext-primary bg-satubg-subtle font-medium text-satutext-primary"
-                    : "border-gray-200 text-satutext-secondary hover:bg-satubg-subtle/50"
+                    ? "border-satutext-primary dark:border-sky-500 bg-satubg-subtle dark:bg-slate-800 font-medium text-satutext-primary dark:text-slate-100"
+                    : "border-gray-200 dark:border-slate-800 text-satutext-secondary dark:text-slate-400 hover:bg-satubg-subtle/50 dark:hover:bg-slate-800/50"
                 }`}
               >
                 {opt.label}
@@ -147,7 +147,7 @@ export const ReplanModal: React.FC<ReplanModalProps> = ({
 
         {/* Adjust Active Commitments */}
         <div>
-          <label className="text-xs font-semibold text-satutext-primary block mb-2">
+          <label className="text-xs font-semibold text-satutext-primary dark:text-slate-100 block mb-2">
             Sesuaikan Komitmen Tersisa ({activeItems.length} aktif)
           </label>
 
@@ -155,13 +155,13 @@ export const ReplanModal: React.FC<ReplanModalProps> = ({
             {activeItems.map((item, idx) => (
               <div
                 key={item.id}
-                className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg text-xs"
+                className="flex items-center justify-between p-3 bg-white dark:bg-slate-800/90 border border-gray-200 dark:border-slate-700 rounded-lg text-xs"
               >
                 <div className="flex items-center gap-2 min-w-0">
-                  <span className="w-5 h-5 rounded-full bg-satutext-primary text-white text-[11px] font-mono flex items-center justify-center shrink-0">
+                  <span className="w-5 h-5 rounded-full bg-satutext-primary dark:bg-slate-700 text-white text-[11px] font-mono flex items-center justify-center shrink-0">
                     {idx + 1}
                   </span>
-                  <span className="font-medium text-satutext-primary truncate">
+                  <span className="font-medium text-satutext-primary dark:text-slate-100 truncate">
                     {item.title}
                   </span>
                 </div>
@@ -171,7 +171,7 @@ export const ReplanModal: React.FC<ReplanModalProps> = ({
                     type="button"
                     disabled={idx === 0}
                     onClick={() => handleMove(idx, "up")}
-                    className="p-1 text-satutext-muted hover:text-satutext-primary disabled:opacity-20"
+                    className="p-1 text-satutext-muted dark:text-slate-400 hover:text-satutext-primary dark:hover:text-slate-200 disabled:opacity-20"
                     title="Naikkan urutan"
                   >
                     <ArrowUp className="w-3.5 h-3.5" />
@@ -180,7 +180,7 @@ export const ReplanModal: React.FC<ReplanModalProps> = ({
                     type="button"
                     disabled={idx === activeItems.length - 1}
                     onClick={() => handleMove(idx, "down")}
-                    className="p-1 text-satutext-muted hover:text-satutext-primary disabled:opacity-20"
+                    className="p-1 text-satutext-muted dark:text-slate-400 hover:text-satutext-primary dark:hover:text-slate-200 disabled:opacity-20"
                     title="Turunkan urutan"
                   >
                     <ArrowDown className="w-3.5 h-3.5" />
@@ -188,7 +188,7 @@ export const ReplanModal: React.FC<ReplanModalProps> = ({
                   <button
                     type="button"
                     onClick={() => handleRemove(item.id)}
-                    className="p-1 text-satutext-muted hover:text-satudanger ml-1"
+                    className="p-1 text-satutext-muted dark:text-slate-400 hover:text-satudanger dark:hover:text-rose-400 ml-1"
                     title="Hapus komitmen"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
@@ -205,7 +205,7 @@ export const ReplanModal: React.FC<ReplanModalProps> = ({
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
               placeholder="Tambah komitmen pengganti..."
-              className="flex-1 px-3 py-1.5 text-xs rounded-lg border border-gray-200 focus:outline-none focus:ring-1 focus:ring-satutext-primary"
+              className="flex-1 px-3 py-1.5 text-xs rounded-lg bg-transparent dark:bg-slate-800/80 border border-gray-200 dark:border-slate-700 text-satutext-primary dark:text-slate-100 placeholder:text-satutext-muted dark:placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-satutext-primary dark:focus:ring-sky-500"
             />
             <Button type="submit" size="sm" variant="outline" disabled={!newTitle.trim()}>
               <Plus className="w-3.5 h-3.5 mr-1" />
@@ -216,7 +216,7 @@ export const ReplanModal: React.FC<ReplanModalProps> = ({
 
         {/* Optional Context Notes */}
         <div>
-          <label className="text-xs font-semibold text-satutext-primary block mb-1">
+          <label className="text-xs font-semibold text-satutext-primary dark:text-slate-100 block mb-1">
             Catatan Tambahan (Konteks kalibrasi opsional)
           </label>
           <input
@@ -224,12 +224,12 @@ export const ReplanModal: React.FC<ReplanModalProps> = ({
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             placeholder="cth. Ada kendala teknis tak terduga yang membutuhkan perhatian segera."
-            className="w-full px-3 py-2 text-xs rounded-lg border border-gray-200 focus:outline-none focus:ring-1 focus:ring-satutext-primary"
+            className="w-full px-3 py-2 text-xs rounded-lg bg-transparent dark:bg-slate-800/80 border border-gray-200 dark:border-slate-700 text-satutext-primary dark:text-slate-100 placeholder:text-satutext-muted dark:placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-satutext-primary dark:focus:ring-sky-500"
           />
         </div>
 
         {/* Footer Actions */}
-        <div className="pt-3 border-t border-gray-100 flex items-center justify-end gap-2">
+        <div className="pt-3 border-t border-gray-100 dark:border-slate-800 flex items-center justify-end gap-2">
           <Button type="button" variant="ghost" size="sm" onClick={onClose}>
             Batal
           </Button>
