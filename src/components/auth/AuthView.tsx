@@ -71,7 +71,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ onSuccess, isModal = false }
           }
         }
       } else {
-        const { error, user } = await signUpWithPassword(email.trim(), password);
+        const { error, user, session } = await signUpWithPassword(email.trim(), password);
         if (error) {
           if (error.message.includes("already registered")) {
             setErrorMsg("Email ini sudah terdaftar. Silakan pilih tab Masuk.");
@@ -82,18 +82,22 @@ export const AuthView: React.FC<AuthViewProps> = ({ onSuccess, isModal = false }
           clearRepositoryCache();
           if (user && !user.identities?.length) {
             setErrorMsg("Akun dengan email ini sudah ada. Silakan masuk.");
-          } else {
+          } else if (!session) {
             setSuccessMsg(
-              "Akun berhasil dibuat! Silakan periksa inbox email Anda untuk konfirmasi jika diwajibkan oleh Supabase, atau langsung masuk."
+              "Akun berhasil didaftarkan! Silakan periksa email Anda untuk verifikasi, lalu masuk."
             );
-            // If user session was immediately established, proceed
+            setTimeout(() => {
+              setMode("login");
+            }, 3000);
+          } else {
+            setSuccessMsg("Akun berhasil dibuat! Menyiapkan ruang eksekusi...");
             setTimeout(() => {
               if (onSuccess) {
                 onSuccess();
               } else {
                 router.push("/app");
               }
-            }, 1200);
+            }, 1000);
           }
         }
       }

@@ -12,7 +12,10 @@ interface AuthContextType {
   isGuest: boolean;
   isSupabaseEnabled: boolean;
   signInWithPassword: (email: string, password: string) => Promise<{ error: Error | null }>;
-  signUpWithPassword: (email: string, password: string) => Promise<{ error: Error | null; user: User | null }>;
+  signUpWithPassword: (
+    email: string,
+    password: string
+  ) => Promise<{ error: Error | null; user: User | null; session: Session | null }>;
   signOut: () => Promise<void>;
   continueAsGuest: () => void;
 }
@@ -110,7 +113,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signUpWithPassword = async (email: string, password: string) => {
     const client = getSupabaseClient();
     if (!client) {
-      return { error: new Error("Supabase belum dikonfigurasi."), user: null };
+      return { error: new Error("Supabase belum dikonfigurasi."), user: null, session: null };
     }
     const { data, error } = await client.auth.signUp({
       email,
@@ -120,14 +123,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!error && data.user) {
       setUser(data.user);
       setSession(data.session);
-      setIsGuest(false);
-      clearRepositoryCache();
-      if (typeof window !== "undefined") {
-        localStorage.removeItem(GUEST_STORAGE_KEY);
+      if (data.session) {
+        setIsGuest(false);
+        clearRepositoryCache();
+        if (typeof window !== "undefined") {
+          localStorage.removeItem(GUEST_STORAGE_KEY);
+        }
       }
     }
 
-    return { error, user: data.user };
+    return { error, user: data.user, session: data.session };
   };
 
   const signOut = async () => {
