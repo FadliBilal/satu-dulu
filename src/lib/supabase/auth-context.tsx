@@ -17,6 +17,9 @@ interface AuthContextType {
     password: string,
     username?: string
   ) => Promise<{ error: Error | null; user: User | null; session: Session | null }>;
+  resetPasswordForEmail: (email: string) => Promise<{ error: Error | null }>;
+  updatePassword: (newPassword: string) => Promise<{ error: Error | null }>;
+  deleteAccount: () => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
   continueAsGuest: () => void;
 }
@@ -142,6 +145,71 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { error, user: data.user, session: data.session };
   };
 
+  const resetPasswordForEmail = async (email: string) => {
+    const client = getSupabaseClient();
+    if (!client) {
+      return { error: new Error("Supabase belum dikonfigurasi.") };
+    }
+    const origin = typeof window !== "undefined" ? window.location.origin : "";
+    const redirectTo = `${origin}/reset-password`;
+    const { error } = await client.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
+      redirectTo,
+    });
+    return { error };
+  };
+
+  const updatePassword = async (newPassword: string) => {
+    const client = getSupabaseClient();
+    if (!client) {
+      return { error: new Error("Supabase belum dikonfigurasi.") };
+    }
+    const { error } = await client.auth.updateUser({ password: newPassword });
+    return { error };
+  };
+
+  const deleteAccount = async () => {
+    if (isGuest || !user) {
+      // Guest mode deletion: clear local demo data and reset
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("satudulu_data_v2");
+        localStorage.removeItem(GUEST_STORAGE_KEY);
+      }
+      setIsGuest(false);
+      setUser(null);
+      setSession(null);
+      clearRepositoryCache();
+      return { error: null };
+    }
+
+    const client = getSupabaseClient();
+    if (!client) {
+      return { error: new Error("Supabase belum dikonfigurasi.") };
+    }
+
+    try {
+      // 1. Attempt server-side RPC function delete_user_account()
+      const { error: rpcError } = await client.rpc("delete_user_account");
+      if (rpcError) {
+        console.warn("RPC delete_user_account error, executing client cascade delete:", rpcError);
+        // Fallback: Delete rows from user-scoped tables
+        const userId = user.id;
+        await client.from("task_events").delete().eq("user_id", userId);
+        await client.from("focus_sessions").delete().eq("user_id", userId);
+        await client.from("daily_reflections").delete().eq("user_id", userId);
+        await client.from("commitments").delete().eq("user_id", userId);
+        await client.from("daily_plans").delete().eq("user_id", userId);
+        await client.from("inbox_items").delete().eq("user_id", userId);
+        await client.from("profiles").delete().eq("user_id", userId);
+      }
+    } catch (err) {
+      console.warn("Error cleaning up user data:", err);
+    }
+
+    // 2. Sign out the user
+    await signOut();
+    return { error: null };
+  };
+
   const signOut = async () => {
     const client = getSupabaseClient();
     if (client) {
@@ -173,6 +241,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isSupabaseEnabled: isSupabaseConfigured,
         signInWithPassword,
         signUpWithPassword,
+        resetPasswordForEmail,
+        updatePassword,
+        deleteAccount,
         signOut,
         continueAsGuest,
       }}

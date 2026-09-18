@@ -160,16 +160,16 @@ export const ExecutionView: React.FC = () => {
   if (!plan || plan.status === "draft" || commitments.length === 0) {
     return (
       <div className="w-full max-w-xl mx-auto px-4 py-12 sm:py-20 text-center">
-        <div className="w-14 h-14 rounded-2xl bg-satublue-50 text-satublue-600 flex items-center justify-center mx-auto mb-4 border border-satublue-100 shadow-xs">
+        <div className="w-14 h-14 rounded-2xl bg-satublue-50 dark:bg-satublue-950/60 text-satublue-600 dark:text-satublue-400 flex items-center justify-center mx-auto mb-4 border border-satublue-100 dark:border-satublue-800 shadow-xs">
           <Calendar className="w-6 h-6" />
         </div>
-        <span className="text-xs font-semibold text-satublue-800 uppercase tracking-wider font-mono">
+        <span className="text-xs font-semibold text-satublue-800 dark:text-satublue-300 uppercase tracking-wider font-mono">
           HARI INI • {todayDate}
         </span>
-        <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900 tracking-tight mt-2 mb-3">
+        <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900 dark:text-slate-100 tracking-tight mt-2 mb-3">
           Hari ini butuh keputusan.
         </h2>
-        <p className="text-sm text-slate-600 max-w-md mx-auto mb-8 leading-relaxed">
+        <p className="text-sm text-slate-600 dark:text-slate-400 max-w-md mx-auto mb-8 leading-relaxed">
           Belum ada rencana yang dikomitkan untuk hari ini. Tentukan apa yang benar-benar penting sebelum mulai bekerja.
         </p>
 
@@ -187,21 +187,21 @@ export const ExecutionView: React.FC = () => {
   if (isAllFinished) {
     return (
       <div className="w-full max-w-xl mx-auto px-4 sm:px-6 py-12 sm:py-20 text-center animate-in fade-in duration-300">
-        <div className="w-16 h-16 rounded-3xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-5 border border-emerald-200/80 shadow-xs">
+        <div className="w-16 h-16 rounded-3xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto mb-5 border border-emerald-200/80 dark:border-emerald-800 shadow-xs">
           <CheckCircle2 className="w-8 h-8" />
         </div>
-        <span className="text-xs font-semibold text-emerald-800 uppercase tracking-wider font-mono">
+        <span className="text-xs font-semibold text-emerald-800 dark:text-emerald-300 uppercase tracking-wider font-mono">
           HARI INI TUNTAS
         </span>
-        <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900 tracking-tight mt-2 mb-3">
+        <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900 dark:text-slate-100 tracking-tight mt-2 mb-3">
           Hanya itu yang Anda komitmenkan.
         </h2>
-        <p className="text-sm text-slate-600 max-w-md mx-auto mb-8 leading-relaxed">
+        <p className="text-sm text-slate-600 dark:text-slate-400 max-w-md mx-auto mb-8 leading-relaxed">
           Tidak ada hal lain yang diwajibkan. Silakan tutup aplikasi dan istirahat dengan tenang.
         </p>
 
         {/* Progress indicators */}
-        <div className="inline-flex items-center gap-2 mb-8 bg-slate-100/90 px-4 py-2 rounded-full text-xs text-slate-700 font-mono">
+        <div className="inline-flex items-center gap-2 mb-8 bg-slate-100/90 dark:bg-slate-900 px-4 py-2 rounded-full text-xs text-slate-700 dark:text-slate-300 font-mono border border-transparent dark:border-slate-800">
           <span>{completedCount} dari {totalCount} tuntas</span>
           <span>•</span>
           <span>{Math.round(commitments.reduce((acc, c) => acc + c.focus_seconds, 0) / 60)}m fokus</span>
@@ -247,31 +247,31 @@ export const ExecutionView: React.FC = () => {
   return (
     <div className="w-full max-w-2xl mx-auto py-2 sm:py-6">
       {/* Top Meta Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-slate-200/80 mb-6 sm:mb-8">
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-slate-200/80 dark:border-slate-800 mb-6 sm:mb-8">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-semibold text-slate-500 tracking-wider uppercase font-mono">
+            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 tracking-wider uppercase font-mono">
               HARI INI • {todayDate}
             </span>
-            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-satublue-700 bg-satublue-50 px-2.5 py-0.5 rounded-full border border-satublue-200/60">
-              <Shield className="w-3 h-3 text-satublue-600" />
+            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-satublue-700 dark:text-satublue-300 bg-satublue-50 dark:bg-satublue-950/70 px-2.5 py-0.5 rounded-full border border-satublue-200/60 dark:border-satublue-800">
+              <Shield className="w-3 h-3 text-satublue-600 dark:text-satublue-400" />
               Terkunci
             </span>
           </div>
-          <h2 className="text-xs text-slate-600 mt-1">
+          <h2 className="text-xs text-slate-600 dark:text-slate-400 mt-1">
             Satu hal yang perlu dikerjakan terlebih dahulu.
           </h2>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs font-mono font-semibold text-satublue-800 bg-satublue-50 px-3 py-1 rounded-lg border border-satublue-200/80">
+          <span className="text-xs font-mono font-semibold text-satublue-800 dark:text-satublue-300 bg-satublue-50 dark:bg-satublue-950/70 px-3 py-1 rounded-lg border border-satublue-200/80 dark:border-satublue-800">
             {activePriorityStr} / {totalCountStr}
           </span>
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setShowReplan(true)}
-            className="text-xs text-slate-500 hover:text-satublue-700 rounded-lg"
+            className="text-xs text-slate-500 dark:text-slate-400 hover:text-satublue-700 dark:hover:text-satublue-300 rounded-lg"
             title="Ada situasi mendesak? Sesuaikan rencana"
           >
             <SlidersHorizontal className="w-3.5 h-3.5 mr-1" />
@@ -282,26 +282,26 @@ export const ExecutionView: React.FC = () => {
 
       {/* Center: The Single Active Commitment Card */}
       {activeCommitment && (
-        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 backdrop-blur-sm border border-slate-200/90 shadow-xl shadow-slate-900/5 text-center mb-8 relative overflow-hidden transition-all">
+        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/90 dark:border-slate-800 shadow-xl shadow-slate-900/5 dark:shadow-black/50 text-center mb-8 relative overflow-hidden transition-all">
           {/* Subtle blue accent bar at top */}
           <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-satublue-500 via-satublue-600 to-sky-500" />
 
-          <span className="text-xs font-semibold text-satublue-700 uppercase tracking-wider font-mono block mb-2">
+          <span className="text-xs font-semibold text-satublue-700 dark:text-satublue-400 uppercase tracking-wider font-mono block mb-2">
             PRIORITAS {activePriorityStr}
           </span>
 
-          <h1 className="text-2xl sm:text-3xl font-semibold text-slate-900 tracking-tight leading-snug mb-3 max-w-lg mx-auto">
+          <h1 className="text-2xl sm:text-3xl font-semibold text-slate-900 dark:text-slate-100 tracking-tight leading-snug mb-3 max-w-lg mx-auto">
             {activeCommitment.title}
           </h1>
 
           {activeCommitment.why_it_matters && (
-            <p className="text-sm text-slate-600 max-w-md mx-auto mb-6 leading-relaxed">
+            <p className="text-sm text-slate-600 dark:text-slate-400 max-w-md mx-auto mb-6 leading-relaxed">
               {activeCommitment.why_it_matters}
             </p>
           )}
 
-          <div className="inline-flex items-center gap-2 text-xs font-mono text-slate-600 mb-8 bg-satublue-50/70 border border-satublue-100 px-4 py-2 rounded-xl">
-            <Clock className="w-3.5 h-3.5 text-satublue-600" />
+          <div className="inline-flex items-center gap-2 text-xs font-mono text-slate-600 dark:text-slate-300 mb-8 bg-satublue-50/70 dark:bg-satublue-950/60 border border-satublue-100 dark:border-satublue-900 px-4 py-2 rounded-xl">
+            <Clock className="w-3.5 h-3.5 text-satublue-600 dark:text-satublue-400" />
             Estimasi {activeCommitment.estimated_duration} menit
           </div>
 
@@ -320,9 +320,9 @@ export const ExecutionView: React.FC = () => {
               size="lg"
               variant="outline"
               onClick={() => handleCompleteActive(0)}
-              className="w-full sm:w-auto px-6 py-3 rounded-2xl border-slate-200 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-700 transition-colors"
+              className="w-full sm:w-auto px-6 py-3 rounded-2xl border-slate-200 dark:border-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 hover:border-emerald-200 dark:hover:border-emerald-800 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
             >
-              <CheckCircle2 className="w-4 h-4 mr-2 text-emerald-600" />
+              <CheckCircle2 className="w-4 h-4 mr-2 text-emerald-600 dark:text-emerald-400" />
               Tandai Selesai
             </Button>
           </div>
@@ -330,7 +330,7 @@ export const ExecutionView: React.FC = () => {
       )}
 
       {/* Bottom Progress Indicator: Subtle Dots (No Titles of Future Tasks!) */}
-      <div className="mt-8 pt-6 border-t border-slate-200/80 flex items-center justify-between text-xs text-slate-500">
+      <div className="mt-8 pt-6 border-t border-slate-200/80 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
         <span>
           {completedCount + 1} dari {totalCount} komitmen
         </span>
@@ -349,8 +349,8 @@ export const ExecutionView: React.FC = () => {
                     isDone
                       ? "w-2.5 h-2.5 bg-emerald-600"
                       : isActive
-                      ? "w-3 h-3 bg-satublue-600 ring-4 ring-satublue-100"
-                      : "w-2.5 h-2.5 border border-slate-300 bg-white"
+                      ? "w-3 h-3 bg-satublue-600 ring-4 ring-satublue-100 dark:ring-satublue-900"
+                      : "w-2.5 h-2.5 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900"
                   }`}
                 />
               );

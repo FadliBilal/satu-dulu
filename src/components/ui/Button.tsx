@@ -25,15 +25,15 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variantStyles = {
       primary:
-        "bg-slate-900 text-white hover:bg-satublue-900 active:bg-slate-950 focus:ring-slate-900 shadow-xs",
+        "bg-slate-900 dark:bg-satublue-600 text-white hover:bg-satublue-900 dark:hover:bg-satublue-500 active:bg-slate-950 dark:active:bg-satublue-700 focus:ring-slate-900 dark:focus:ring-satublue-500 shadow-xs",
       blue:
         "bg-satublue-600 text-white hover:bg-satublue-700 active:bg-satublue-800 focus:ring-satublue-600 shadow-xs",
       secondary:
-        "bg-satublue-50 text-satublue-900 border border-satublue-200/80 hover:bg-satublue-100 active:bg-satublue-200 focus:ring-satublue-500",
+        "bg-satublue-50 dark:bg-satublue-950/60 text-satublue-900 dark:text-satublue-200 border border-satublue-200/80 dark:border-satublue-800 hover:bg-satublue-100 dark:hover:bg-satublue-900 active:bg-satublue-200 focus:ring-satublue-500",
       outline:
-        "border border-slate-200 bg-white text-slate-800 hover:bg-slate-50 hover:border-slate-300 active:bg-slate-100 focus:ring-satublue-500",
+        "border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/80 hover:border-slate-300 dark:hover:border-slate-700 active:bg-slate-100 dark:active:bg-slate-800 focus:ring-satublue-500",
       ghost:
-        "text-slate-600 hover:text-satublue-700 hover:bg-satublue-50/70 focus:ring-satublue-500",
+        "text-slate-600 dark:text-slate-400 hover:text-satublue-700 dark:hover:text-satublue-400 hover:bg-satublue-50/70 dark:hover:bg-slate-800/60 focus:ring-satublue-500",
       danger:
         "bg-satudanger text-white hover:bg-red-700 active:bg-red-800 focus:ring-satudanger",
     };
