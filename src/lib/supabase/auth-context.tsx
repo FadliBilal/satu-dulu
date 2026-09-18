@@ -150,7 +150,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!client) {
       return { error: new Error("Supabase belum dikonfigurasi.") };
     }
-    const origin = typeof window !== "undefined" ? window.location.origin : "";
+    const origin =
+      process.env.NEXT_PUBLIC_APP_URL ||
+      (typeof window !== "undefined" ? window.location.origin : "");
     const redirectTo = `${origin}/reset-password`;
     const { error } = await client.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
       redirectTo,

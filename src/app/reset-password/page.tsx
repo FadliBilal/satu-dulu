@@ -1,23 +1,82 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Lock, Eye, EyeOff, CheckCircle2, ArrowLeft, KeyRound, ShieldCheck } from "lucide-react";
+import { Lock, Eye, EyeOff, CheckCircle2, ArrowLeft, KeyRound, ShieldCheck, AlertCircle } from "lucide-react";
 import { useAuth } from "@/lib/supabase/auth-context";
-import { Button } from "@/components/ui/Button";
-import { Logo } from "@/components/ui/Logo";
+import { getSupabaseClient } from "@/lib/supabase/client";
+import { Button, Logo, Input } from "@/components/ui";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
-  const { updatePassword, isSupabaseEnabled } = useAuth();
+  const { user, updatePassword, isSupabaseEnabled } = useAuth();
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [initializing, setInitializing] = useState(true);
+  const [isRecoverySessionReady, setIsRecoverySessionReady] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+
+  useEffect(() => {
+    async function checkRecoverySession() {
+      const client = getSupabaseClient();
+      if (!client) {
+        setInitializing(false);
+        return;
+      }
+
+      // 1. Check if PKCE code parameter exists in URL
+      if (typeof window !== "undefined") {
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get("code");
+        if (code) {
+          try {
+            const { data, error } = await client.auth.exchangeCodeForSession(code);
+            if (!error && data.session) {
+              setIsRecoverySessionReady(true);
+              setInitializing(false);
+              return;
+            }
+          } catch (err) {
+            console.warn("Gagal menukar kode PKCE:", err);
+          }
+        }
+
+        // 2. Check hash fragments (implicit flow)
+        if (window.location.hash && window.location.hash.includes("access_token")) {
+          setIsRecoverySessionReady(true);
+          setInitializing(false);
+          return;
+        }
+      }
+
+      // 3. Check current session
+      const { data } = await client.auth.getSession();
+      if (data.session) {
+        setIsRecoverySessionReady(true);
+      }
+      setInitializing(false);
+    }
+
+    checkRecoverySession();
+
+    // Listen to PASSWORD_RECOVERY event
+    const client = getSupabaseClient();
+    if (client) {
+      const { data: { subscription } } = client.auth.onAuthStateChange((event) => {
+        if (event === "PASSWORD_RECOVERY" || event === "SIGNED_IN") {
+          setIsRecoverySessionReady(true);
+        }
+      });
+      return () => {
+        subscription.unsubscribe();
+      };
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,7 +97,13 @@ export default function ResetPasswordPage() {
     try {
       const { error } = await updatePassword(password);
       if (error) {
-        setErrorMsg(error.message || "Gagal memperbarui kata sandi.");
+        if (error.message.includes("Auth session missing")) {
+          setErrorMsg(
+            "Sesi pemulihan tidak ditemukan atau tautan telah kedaluwarsa. Silakan minta tautan baru melalui menu Lupa Password di halaman Masuk."
+          );
+        } else {
+          setErrorMsg(error.message || "Gagal memperbarui kata sandi.");
+        }
       } else {
         setSuccessMsg("Kata sandi berhasil diperbarui! Mengalihkan ke ruang eksekusi...");
         setTimeout(() => {
@@ -46,7 +111,7 @@ export default function ResetPasswordPage() {
         }, 1500);
       }
     } catch (err: any) {
-      setErrorMsg(err.message || "Terjadi kesalahan saat memperbarui kata sandi.");
+      setErrorMsg(err?.message || "Terjadi kesalahan saat memperbarui kata sandi.");
     } finally {
       setLoading(false);
     }
@@ -83,6 +148,16 @@ export default function ResetPasswordPage() {
           </p>
         </div>
 
+        {/* Warning if opened without email recovery link */}
+        {!initializing && !isRecoverySessionReady && !user && (
+          <div className="mb-4 p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/50 text-xs text-amber-800 dark:text-amber-300 font-medium flex items-start gap-2 leading-relaxed">
+            <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+            <span>
+              Pastikan Anda membuka halaman ini dengan mengklik tautan pemulihan yang dikirimkan ke email Anda.
+            </span>
+          </div>
+        )}
+
         {/* Error / Success Feedback */}
         {errorMsg && (
           <div className="mb-4 p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/50 text-xs text-rose-700 dark:text-rose-300 font-medium animate-in fade-in">
@@ -101,41 +176,38 @@ export default function ResetPasswordPage() {
             <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
               Kata Sandi Baru
             </label>
-            <div className="relative">
-              <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-              <input
-                type={showPassword ? "text" : "password"}
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Minimal 6 karakter"
-                className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-satublue-500/20 focus:border-satublue-600 transition-all bg-white dark:bg-slate-950"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
-              >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
-            </div>
+            <Input
+              type={showPassword ? "text" : "password"}
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Minimal 6 karakter"
+              leftIcon={<Lock className="w-4 h-4" />}
+              rightAction={
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                  aria-label={showPassword ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              }
+            />
           </div>
 
           <div>
             <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
               Konfirmasi Kata Sandi Baru
             </label>
-            <div className="relative">
-              <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-              <input
-                type={showPassword ? "text" : "password"}
-                required
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Ulangi kata sandi baru"
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-satublue-500/20 focus:border-satublue-600 transition-all bg-white dark:bg-slate-950"
-              />
-            </div>
+            <Input
+              type={showPassword ? "text" : "password"}
+              required
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Ulangi kata sandi baru"
+              leftIcon={<Lock className="w-4 h-4" />}
+            />
           </div>
 
           <Button

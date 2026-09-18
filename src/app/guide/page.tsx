@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function GuidePage() {
   return (
-    <div className="min-h-screen bg-satubg-light flex flex-col selection:bg-satublue-100">
+    <div className="min-h-screen bg-satubg-light dark:bg-[#090D16] flex flex-col selection:bg-satublue-100 dark:selection:bg-satublue-900">
       <Navbar />
       <main className="flex-1 w-full">
         <GuideView />
