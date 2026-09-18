@@ -14,7 +14,8 @@ interface AuthContextType {
   signInWithPassword: (email: string, password: string) => Promise<{ error: Error | null }>;
   signUpWithPassword: (
     email: string,
-    password: string
+    password: string,
+    username?: string
   ) => Promise<{ error: Error | null; user: User | null; session: Session | null }>;
   signOut: () => Promise<void>;
   continueAsGuest: () => void;
@@ -110,14 +111,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { error };
   };
 
-  const signUpWithPassword = async (email: string, password: string) => {
+  const signUpWithPassword = async (email: string, password: string, username?: string) => {
     const client = getSupabaseClient();
     if (!client) {
       return { error: new Error("Supabase belum dikonfigurasi."), user: null, session: null };
     }
+    const cleanUsername = username?.trim().toLowerCase();
     const { data, error } = await client.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          username: cleanUsername || email.split("@")[0],
+        },
+      },
     });
 
     if (!error && data.user) {

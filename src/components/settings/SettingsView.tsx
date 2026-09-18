@@ -60,6 +60,8 @@ export const SettingsView: React.FC = () => {
   const [message, setMessage] = useState("");
   const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>("default");
   const [geminiKey, setGeminiKey] = useState("");
+  const [usernameInput, setUsernameInput] = useState("");
+  const [usernameError, setUsernameError] = useState("");
 
   useEffect(() => {
     async function loadSettings() {
@@ -67,6 +69,8 @@ export const SettingsView: React.FC = () => {
         const repo = getRepository();
         const p = await repo.getProfile();
         setProfile(p);
+        const resolvedUsername = p.username || (user?.user_metadata?.username as string) || "";
+        setUsernameInput(resolvedUsername);
         setNotificationPermission(NotificationService.getPermission());
         const savedKey = localStorage.getItem("satudulu_gemini_key") || "";
         setGeminiKey(savedKey);
@@ -77,7 +81,7 @@ export const SettingsView: React.FC = () => {
       }
     }
     loadSettings();
-  }, []);
+  }, [user]);
 
   const handleUpdate = async (updates: Partial<Profile>) => {
     if (!profile) return;
@@ -91,6 +95,21 @@ export const SettingsView: React.FC = () => {
     } finally {
       setSaving(false);
     }
+  };
+
+  const handleSaveUsername = async () => {
+    const clean = usernameInput.trim().toLowerCase().replace(/^@/, "");
+    if (!clean) {
+      setUsernameError("Username tidak boleh kosong.");
+      return;
+    }
+    if (!/^[a-z0-9_]{3,20}$/.test(clean)) {
+      setUsernameError("Username hanya boleh 3-20 karakter huruf kecil, angka, dan garis bawah (_).");
+      return;
+    }
+    setUsernameError("");
+    await handleUpdate({ username: clean });
+    setUsernameInput(clean);
   };
 
   const handleEnableNotifications = async () => {
@@ -174,18 +193,23 @@ export const SettingsView: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3.5">
             <div className="w-10 h-10 rounded-xl bg-satublue-50 border border-satublue-100 flex items-center justify-center text-satublue-700 font-semibold text-sm">
-              {user?.email ? user.email.slice(0, 2).toUpperCase() : <User className="w-5 h-5 text-slate-500" />}
+              {profile.username
+                ? profile.username.slice(0, 2).toUpperCase()
+                : user?.email
+                ? user.email.slice(0, 2).toUpperCase()
+                : <User className="w-5 h-5 text-slate-500" />}
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-sm font-semibold text-slate-900">
-                  {user ? user.email : "Mode Tamu (Offline)"}
+                  {profile.username ? `@${profile.username}` : user ? user.email : "Mode Tamu (Offline)"}
                 </h3>
                 <Badge variant={isSupabaseActive ? "success" : "neutral"}>
                   {isSupabaseActive ? "Supabase Cloud" : "Lokal Offline"}
                 </Badge>
               </div>
               <p className="text-xs text-slate-500 mt-0.5">
+                {user?.email && profile.username ? `${user.email} • ` : ""}
                 {isSupabaseActive
                   ? "Tersinkronisasi aman ke PostgreSQL cloud dengan Row Level Security."
                   : "Data disimpan di penyimpanan lokal browser Anda."}
@@ -212,6 +236,47 @@ export const SettingsView: React.FC = () => {
               </Link>
             )}
           </div>
+        </div>
+
+        {/* Username Configuration Row */}
+        <div className="mt-5 pt-5 border-t border-slate-100">
+          <label className="block text-xs font-medium text-slate-700 mb-1.5">
+            Username Pengguna (@)
+          </label>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <div className="relative flex-1">
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-medium text-slate-400 select-none">
+                @
+              </span>
+              <input
+                type="text"
+                value={usernameInput}
+                onChange={(e) => {
+                  setUsernameInput(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ""));
+                  setUsernameError("");
+                }}
+                placeholder="nama_pengguna"
+                maxLength={20}
+                className="w-full text-xs pl-8 pr-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-satublue-500/20 focus:border-satublue-600 bg-white"
+              />
+            </div>
+            <Button
+              size="sm"
+              variant="outline"
+              disabled={saving}
+              onClick={handleSaveUsername}
+              className="shrink-0 text-xs"
+            >
+              Simpan Username
+            </Button>
+          </div>
+          {usernameError ? (
+            <p className="text-[11px] text-rose-600 mt-1.5">{usernameError}</p>
+          ) : (
+            <p className="text-[11px] text-slate-400 mt-1.5">
+              Username unik Anda (3-20 karakter, huruf kecil, angka, dan garis bawah).
+            </p>
+          )}
         </div>
       </Card>
 

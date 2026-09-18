@@ -16,6 +16,7 @@ export type Occupation =
 export interface Profile {
   id: string;
   user_id: string;
+  username?: string | null;
   occupation: Occupation;
   timezone: string; // e.g. "Asia/Jakarta"
   created_at: string;

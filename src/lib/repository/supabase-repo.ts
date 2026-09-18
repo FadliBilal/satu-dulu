@@ -54,9 +54,12 @@ export class SupabaseRepository implements IRepository {
 
     if (error || !data) {
       // Upsert default
+      const { data: authData } = await this.client.auth.getUser();
+      const metaUsername = authData?.user?.user_metadata?.username || null;
       const defaultProfile: Profile = {
         id: userId,
         user_id: userId,
+        username: metaUsername,
         occupation: "other",
         timezone: "Asia/Jakarta",
         created_at: new Date().toISOString(),
@@ -65,11 +68,28 @@ export class SupabaseRepository implements IRepository {
       await this.client.from("profiles").upsert(defaultProfile);
       return defaultProfile;
     }
+
+    if (!data.username) {
+      const { data: authData } = await this.client.auth.getUser();
+      if (authData?.user?.user_metadata?.username) {
+        data.username = authData.user.user_metadata.username;
+      }
+    }
+
     return data;
   }
 
   async updateProfile(updates: Partial<Profile>): Promise<Profile> {
     const userId = await this.getUserId();
+
+    if (updates.username !== undefined) {
+      try {
+        await this.client.auth.updateUser({ data: { username: updates.username } });
+      } catch (err) {
+        console.warn("Could not sync username to auth metadata", err);
+      }
+    }
+
     const { data, error } = await this.client
       .from("profiles")
       .update({ ...updates, updated_at: new Date().toISOString() })

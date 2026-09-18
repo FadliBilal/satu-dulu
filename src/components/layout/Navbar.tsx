@@ -84,7 +84,14 @@ export const Navbar: React.FC = () => {
     { label: "Vault", href: "/app/vault", icon: Archive },
   ];
 
-  const userInitial = user?.email
+  const userMetadataUsername = user?.user_metadata?.username;
+  const displayName = userMetadataUsername
+    ? `@${userMetadataUsername}`
+    : user?.email || "Tamu (Mode Offline)";
+
+  const userInitial = userMetadataUsername
+    ? userMetadataUsername.slice(0, 2).toUpperCase()
+    : user?.email
     ? user.email.slice(0, 2).toUpperCase()
     : "TM";
 
@@ -126,63 +133,55 @@ export const Navbar: React.FC = () => {
           </nav>
         </div>
 
-        {/* Right side: Clean, uncluttered items across breakpoints */}
-        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-          {/* Subtle Date Display — only on wide screens >= 1280px (xl) */}
+        {/* Right: Momentum, Guide, Settings, and User Avatar */}
+        <div className="flex items-center gap-1 sm:gap-2">
+          {/* Momentum Badge */}
+          <div
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-satublue-50 border border-satublue-200/80 shadow-xs"
+            title="Skor Momentum Eksekusi"
+          >
+            <span className="w-2 h-2 rounded-full bg-satublue-600 animate-pulse" />
+            <span className="text-xs font-semibold text-satublue-900 font-mono">
+              {momentum}
+            </span>
+            <span className="text-[10px] text-satublue-700 font-mono hidden sm:inline">
+              MOMENTUM
+            </span>
+          </div>
+
+          {/* Date pill (XL screens only) */}
           {currentDateStr && (
-            <span className="hidden xl:inline-block text-[11px] font-mono text-slate-400 border-r border-slate-200 pr-3 mr-1">
+            <span className="hidden xl:inline-block text-xs font-mono text-slate-500 bg-slate-100/80 px-2.5 py-1 rounded-lg">
               {currentDateStr}
             </span>
           )}
 
-          {/* Momentum counter */}
-          {momentum > 0 && (
-            <div
-              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded-full bg-satublue-50 border border-satublue-200/80 text-satublue-800 text-xs font-medium shrink-0"
-              title={`${momentum} komitmen tuntas berturut-turut`}
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-satublue-600 animate-pulse" />
-              <span className="font-mono font-semibold">{momentum}</span>
-              <span className="hidden lg:inline text-[11px] text-satublue-700">Momentum</span>
-            </div>
-          )}
-
-          {/* Panduan Link — visible on md and up, hidden on mobile */}
+          {/* Panduan shortcut (Tablet & Desktop) */}
           <Link
             href="/guide"
-            className={clsx(
-              "hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-medium transition-colors shrink-0",
-              pathname === "/guide"
-                ? "text-satublue-700 bg-satublue-50 font-semibold"
-                : "text-slate-600 hover:text-slate-900 hover:bg-slate-100/70"
-            )}
-            title="Panduan Filosofi & Eksekusi"
+            className="hidden md:flex items-center gap-1 px-2.5 py-1.5 text-xs text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all"
+            title="Panduan Cara Pakai"
           >
-            <BookOpen className="w-3.5 h-3.5" />
-            <span className="hidden xl:inline text-xs">Panduan</span>
+            <BookOpen className="w-4 h-4 text-slate-500" />
+            <span className="hidden lg:inline text-xs">Panduan</span>
           </Link>
 
-          {/* Pengaturan Link — visible on md and up, hidden on mobile (accessed via avatar) */}
+          {/* Settings shortcut (Tablet & Desktop) */}
           <Link
             href="/app/settings"
-            className={clsx(
-              "hidden md:flex p-2 rounded-xl text-xs font-medium transition-colors items-center justify-center shrink-0",
-              pathname === "/app/settings"
-                ? "text-satublue-700 bg-satublue-50"
-                : "text-slate-600 hover:text-slate-900 hover:bg-slate-100/70"
-            )}
+            className="hidden md:flex items-center gap-1 p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all"
             title="Pengaturan"
           >
-            <Settings className="w-4 h-4" />
+            <Settings className="w-4 h-4 text-slate-500" />
           </Link>
 
-          {/* User Profile Dropdown — ALWAYS clean and accessible */}
+          {/* User Avatar Dropdown (All Screen Sizes) */}
           <div className="relative" ref={dropdownRef}>
             <button
               type="button"
               onClick={() => setUserDropdownOpen(!userDropdownOpen)}
               className="flex items-center gap-1 p-0.5 sm:p-1 pl-1 sm:pl-1.5 rounded-full bg-slate-100 hover:bg-slate-200/80 transition-all border border-slate-200/80 shrink-0"
-              title={user ? user.email : "Akun Pengguna"}
+              title={displayName}
             >
               <div className="w-6 h-6 rounded-full bg-satublue-600 text-white flex items-center justify-center text-[10px] font-semibold tracking-wider">
                 {userInitial}
@@ -195,9 +194,14 @@ export const Navbar: React.FC = () => {
               <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white border border-slate-200 shadow-xl py-2 z-50 animate-in fade-in zoom-in-95">
                 <div className="px-3.5 py-2 border-b border-slate-100">
                   <p className="text-xs font-semibold text-slate-900 truncate">
-                    {user ? user.email : "Tamu (Mode Offline)"}
+                    {displayName}
                   </p>
-                  <span className="inline-flex items-center gap-1 text-[10px] text-slate-500 mt-0.5">
+                  {user?.email && userMetadataUsername && (
+                    <p className="text-[11px] text-slate-400 truncate mt-0.5">
+                      {user.email}
+                    </p>
+                  )}
+                  <span className="inline-flex items-center gap-1 text-[10px] text-slate-500 mt-1">
                     <ShieldCheck className="w-3 h-3 text-emerald-600" />
                     {user ? "Supabase Cloud" : "Penyimpanan Lokal"}
                   </span>

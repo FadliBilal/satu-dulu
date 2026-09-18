@@ -13,6 +13,7 @@ import {
   Sparkles,
   Database,
   ArrowLeft,
+  AtSign,
 } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/lib/supabase/auth-context";
@@ -30,6 +31,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ onSuccess, isModal = false }
   const { signInWithPassword, signUpWithPassword, continueAsGuest, isSupabaseEnabled } = useAuth();
 
   const [mode, setMode] = useState<"login" | "register">("login");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -42,8 +44,15 @@ export const AuthView: React.FC<AuthViewProps> = ({ onSuccess, isModal = false }
     setErrorMsg("");
     setSuccessMsg("");
 
-    if (!email.trim() || !password) {
-      setErrorMsg("Harap masukkan email dan kata sandi.");
+    const cleanEmail = email.trim().toLowerCase();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    if (!cleanEmail || !emailRegex.test(cleanEmail)) {
+      setErrorMsg("Harap masukkan alamat email asli yang valid (contoh: nama@gmail.com).");
+      return;
+    }
+
+    if (!password) {
+      setErrorMsg("Harap masukkan kata sandi.");
       return;
     }
 
@@ -52,10 +61,26 @@ export const AuthView: React.FC<AuthViewProps> = ({ onSuccess, isModal = false }
       return;
     }
 
+    if (mode === "register") {
+      const cleanUsername = username.trim().toLowerCase();
+      if (!cleanUsername) {
+        setErrorMsg("Harap tentukan username Anda.");
+        return;
+      }
+      if (cleanUsername.length < 3 || cleanUsername.length > 20) {
+        setErrorMsg("Username harus memiliki panjang antara 3 hingga 20 karakter.");
+        return;
+      }
+      if (!/^[a-z0-9_]+$/.test(cleanUsername)) {
+        setErrorMsg("Username hanya boleh terdiri dari huruf kecil, angka, dan garis bawah (_).");
+        return;
+      }
+    }
+
     setLoading(true);
     try {
       if (mode === "login") {
-        const { error } = await signInWithPassword(email.trim(), password);
+        const { error } = await signInWithPassword(cleanEmail, password);
         if (error) {
           if (error.message.includes("Invalid login credentials")) {
             setErrorMsg("Email atau kata sandi tidak cocok. Silakan periksa kembali.");
@@ -71,7 +96,8 @@ export const AuthView: React.FC<AuthViewProps> = ({ onSuccess, isModal = false }
           }
         }
       } else {
-        const { error, user, session } = await signUpWithPassword(email.trim(), password);
+        const cleanUsername = username.trim().toLowerCase();
+        const { error, user, session } = await signUpWithPassword(cleanEmail, password, cleanUsername);
         if (error) {
           if (error.message.includes("already registered")) {
             setErrorMsg("Email ini sudah terdaftar. Silakan pilih tab Masuk.");
@@ -84,11 +110,11 @@ export const AuthView: React.FC<AuthViewProps> = ({ onSuccess, isModal = false }
             setErrorMsg("Akun dengan email ini sudah ada. Silakan masuk.");
           } else if (!session) {
             setSuccessMsg(
-              "Akun berhasil didaftarkan! Silakan periksa email Anda untuk verifikasi, lalu masuk."
+              "Akun berhasil didaftarkan! Silakan periksa inbox/spam email Anda untuk verifikasi, lalu masuk."
             );
             setTimeout(() => {
               setMode("login");
-            }, 3000);
+            }, 3500);
           } else {
             setSuccessMsg("Akun berhasil dibuat! Menyiapkan ruang eksekusi...");
             setTimeout(() => {
@@ -205,9 +231,34 @@ export const AuthView: React.FC<AuthViewProps> = ({ onSuccess, isModal = false }
 
         {/* Form Inputs */}
         <form onSubmit={handleSubmit} className="space-y-4">
+          {mode === "register" && (
+            <div>
+              <label className="block text-xs font-medium text-slate-700 mb-1.5">
+                Username (@nama_pengguna)
+              </label>
+              <div className="relative">
+                <AtSign className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  required
+                  value={username}
+                  onChange={(e) =>
+                    setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ""))
+                  }
+                  placeholder="e.g. fadlibilal"
+                  maxLength={20}
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-satublue-500/20 focus:border-satublue-600 transition-all bg-white font-mono"
+                />
+              </div>
+              <span className="text-[11px] text-slate-400 mt-1 block">
+                3–20 karakter (huruf kecil, angka, atau garis bawah).
+              </span>
+            </div>
+          )}
+
           <div>
             <label className="block text-xs font-medium text-slate-700 mb-1.5">
-              Alamat Email
+              {mode === "register" ? "Alamat Email Asli (Aktif)" : "Alamat Email"}
             </label>
             <div className="relative">
               <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -220,12 +271,27 @@ export const AuthView: React.FC<AuthViewProps> = ({ onSuccess, isModal = false }
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-satublue-500/20 focus:border-satublue-600 transition-all bg-white"
               />
             </div>
+            {mode === "register" && (
+              <span className="text-[11px] text-slate-400 mt-1 block">
+                Pastikan email aktif untuk menerima tautan konfirmasi pendaftaran.
+              </span>
+            )}
           </div>
 
           <div>
             <label className="block text-xs font-medium text-slate-700 mb-1.5">
-              Kata Sandi
+              {mode === "register" ? "Buat Kata Sandi Baru" : "Kata Sandi"}
             </label>
+
+            {mode === "register" && (
+              <div className="p-2.5 rounded-xl bg-satublue-50 border border-satublue-200/80 mb-2 flex items-start gap-2 text-xs text-satublue-900 leading-relaxed">
+                <ShieldCheck className="w-4 h-4 text-satublue-600 shrink-0 mt-0.5" />
+                <span className="text-[11px]">
+                  Buat kata sandi baru untuk SatuDulu. <strong>Bukan</strong> kata sandi akun email asli Anda demi keamanan privasi Anda.
+                </span>
+              </div>
+            )}
+
             <div className="relative">
               <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
@@ -233,7 +299,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ onSuccess, isModal = false }
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Minimal 6 karakter"
+                placeholder={mode === "register" ? "Minimal 6 karakter" : "Masukkan kata sandi"}
                 className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-satublue-500/20 focus:border-satublue-600 transition-all bg-white"
               />
               <button
