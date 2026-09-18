@@ -29,8 +29,24 @@ export default function ResetPasswordPage() {
         return;
       }
 
-      // 1. Check if PKCE code parameter exists in URL
+      // Check for error fragments in URL (e.g. otp_expired)
       if (typeof window !== "undefined") {
+        const hash = window.location.hash || "";
+        const search = window.location.search || "";
+        if (
+          hash.includes("error_code=otp_expired") ||
+          search.includes("error_code=otp_expired") ||
+          hash.includes("access_denied") ||
+          search.includes("access_denied")
+        ) {
+          setErrorMsg(
+            "Tautan pemulihan kata sandi telah kedaluwarsa atau sudah pernah digunakan. Silakan minta tautan pemulihan baru melalui halaman Masuk."
+          );
+          setInitializing(false);
+          return;
+        }
+
+        // 1. Check if PKCE code parameter exists in URL
         const params = new URLSearchParams(window.location.search);
         const code = params.get("code");
         if (code) {

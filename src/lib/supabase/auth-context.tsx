@@ -56,12 +56,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return;
     }
 
-    // Check if URL hash or search contains recovery tokens when not on /reset-password
+    // Check if URL hash or search contains recovery tokens or recovery errors when not on /reset-password
     if (typeof window !== "undefined") {
       const hash = window.location.hash || "";
       const search = window.location.search || "";
       if (
-        (hash.includes("type=recovery") || search.includes("type=recovery")) &&
+        (hash.includes("type=recovery") ||
+          search.includes("type=recovery") ||
+          hash.includes("error_code=") ||
+          search.includes("error_code=")) &&
         window.location.pathname !== "/reset-password"
       ) {
         window.location.replace(`/reset-password${search}${hash}`);
@@ -139,10 +142,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return { error: new Error("Supabase belum dikonfigurasi."), user: null, session: null };
     }
     const cleanUsername = username?.trim().toLowerCase();
+    const origin =
+      process.env.NEXT_PUBLIC_APP_URL ||
+      (typeof window !== "undefined" ? window.location.origin : "");
     const { data, error } = await client.auth.signUp({
       email,
       password,
       options: {
+        emailRedirectTo: `${origin}/app`,
         data: {
           username: cleanUsername || email.split("@")[0],
         },
