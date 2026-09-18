@@ -32,14 +32,14 @@ function applyThemeToDocument(resolved: ResolvedTheme) {
 }
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setThemeState] = useState<Theme>("system");
+  const [theme, setThemeState] = useState<Theme>("light");
   const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>("light");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // 1. Initial load from localStorage
+    // 1. Initial load from localStorage (default: light mode)
     const saved = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
-    const initialTheme: Theme = saved === "light" || saved === "dark" || saved === "system" ? saved : "system";
+    const initialTheme: Theme = saved === "light" || saved === "dark" || saved === "system" ? saved : "light";
     setThemeState(initialTheme);
 
     const resolved = initialTheme === "system" ? getSystemTheme() : initialTheme;
@@ -47,11 +47,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     applyThemeToDocument(resolved);
     setMounted(true);
 
-    // 2. Listen to system preference changes if in system mode
+    // 2. Listen to system preference changes only if explicitly in system mode
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const handleChange = (e: MediaQueryListEvent) => {
       const currentSaved = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
-      if (!currentSaved || currentSaved === "system") {
+      if (currentSaved === "system") {
         const nextResolved: ResolvedTheme = e.matches ? "dark" : "light";
         setResolvedTheme(nextResolved);
         applyThemeToDocument(nextResolved);

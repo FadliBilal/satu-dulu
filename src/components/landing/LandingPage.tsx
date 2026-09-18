@@ -51,12 +51,6 @@ export const LandingPage: React.FC = () => {
               Cara Kerja
             </Link>
             <Link
-              href="#riset"
-              className="text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-satublue-700 dark:hover:text-satublue-400 hover:bg-slate-100/60 dark:hover:bg-slate-800/60 px-3 py-1.5 rounded-full transition-colors whitespace-nowrap"
-            >
-              Dasar Riset
-            </Link>
-            <Link
               href="/guide"
               className="text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-satublue-700 dark:hover:text-satublue-400 hover:bg-slate-100/60 dark:hover:bg-slate-800/60 px-3 py-1.5 rounded-full transition-colors whitespace-nowrap"
             >
@@ -100,12 +94,6 @@ export const LandingPage: React.FC = () => {
 
       {/* Hero Section */}
       <section className="pt-24 sm:pt-36 md:pt-40 pb-16 px-4 sm:px-6 max-w-4xl mx-auto text-center relative">
-        {/* Subtle pill tag */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-satublue-50/90 dark:bg-blue-950/70 backdrop-blur-md border border-satublue-200 dark:border-blue-800/80 text-[11px] sm:text-xs text-satublue-900 dark:text-sky-200 mb-6 sm:mb-8 font-medium shadow-xs max-w-full">
-          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-satublue-600 dark:bg-sky-400 animate-pulse shrink-0" />
-          <span className="truncate">Sistem Eksekusi Personal Berbasis Riset Kognitif</span>
-        </div>
-
         <h1 className="text-2xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 leading-[1.15] mb-4 sm:mb-6">
           Berhenti mengelola segalanya.
           <br />
