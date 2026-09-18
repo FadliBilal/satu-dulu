@@ -11,7 +11,6 @@
   <img src="https://img.shields.io/badge/TailwindCSS-Custom_Design_System-38B2AC?style=flat-square&logo=tailwind-css" alt="Tailwind CSS">
   <img src="https://img.shields.io/badge/Tests-19%2F19_Passed_Vitest-emerald?style=flat-square" alt="Tests">
   <img src="https://img.shields.io/badge/PWA-Installable_Offline-orange?style=flat-square" alt="PWA Ready">
-  <img src="https://img.shields.io/badge/Design_Rule-Strictly_No_Emojis-slate?style=flat-square" alt="Strictly No Emojis">
 </p>
 
 ---

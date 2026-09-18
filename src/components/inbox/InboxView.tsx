@@ -32,16 +32,24 @@ export const InboxView: React.FC = () => {
   const handleAddItem = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!titleInput.trim()) return;
-    const repo = getRepository();
-    const created = await repo.createInboxItem(titleInput.trim());
-    setItems([created, ...items]);
-    setTitleInput("");
+    try {
+      const repo = getRepository();
+      const created = await repo.createInboxItem(titleInput.trim());
+      setItems([created, ...items]);
+      setTitleInput("");
+    } catch (err: any) {
+      alert("Gagal menambahkan tugas ke Inbox: " + (err.message || "Silakan coba lagi."));
+    }
   };
 
   const handleDeleteItem = async (id: string) => {
-    const repo = getRepository();
-    await repo.deleteInboxItem(id);
-    setItems(items.filter((i) => i.id !== id));
+    try {
+      const repo = getRepository();
+      await repo.deleteInboxItem(id);
+      setItems(items.filter((i) => i.id !== id));
+    } catch (err: any) {
+      alert("Gagal menghapus tugas: " + (err.message || "Silakan coba lagi."));
+    }
   };
 
   const handleSaveClarified = async (clarified: {
@@ -50,20 +58,24 @@ export const InboxView: React.FC = () => {
     estimated_duration: number;
   }) => {
     if (!clarifyingItem) return;
-    const repo = getRepository();
-    const updated = await repo.updateInboxItem(clarifyingItem.id, {
-      title: clarified.title,
-      description: clarified.why_it_matters,
-    });
-    setItems(items.map((i) => (i.id === updated.id ? updated : i)));
-    setClarifyingItem(null);
+    try {
+      const repo = getRepository();
+      const updated = await repo.updateInboxItem(clarifyingItem.id, {
+        title: clarified.title,
+        description: clarified.why_it_matters,
+      });
+      setItems(items.map((i) => (i.id === updated.id ? updated : i)));
+      setClarifyingItem(null);
+    } catch (err: any) {
+      alert("Gagal menyimpan hasil klarifikasi: " + (err.message || "Silakan coba lagi."));
+    }
   };
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8 pb-32">
+    <div className="w-full max-w-3xl mx-auto py-2 sm:py-6">
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between">
+      <div className="mb-6 sm:mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
               Inbox
@@ -73,10 +85,10 @@ export const InboxView: React.FC = () => {
             </p>
           </div>
           {items.length > 0 && (
-            <Link href="/app/plan">
-              <Button size="sm" variant="blue">
+            <Link href="/app/plan" className="self-start sm:self-auto">
+              <Button size="sm" variant="blue" className="rounded-xl shadow-xs">
                 Rencanakan Besok
-                <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
               </Button>
             </Link>
           )}
@@ -84,14 +96,14 @@ export const InboxView: React.FC = () => {
       </div>
 
       {/* Quick Input Bar */}
-      <form onSubmit={handleAddItem} className="mb-8">
-        <div className="relative flex items-center">
+      <form onSubmit={handleAddItem} className="mb-6 sm:mb-8">
+        <div className="relative flex items-center shadow-xs">
           <input
             type="text"
             value={titleInput}
             onChange={(e) => setTitleInput(e.target.value)}
             placeholder="Tuliskan tugas, ide, atau revisi... (Tekan Enter)"
-            className="w-full pl-4 pr-24 py-3 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-satublue-600 shadow-xs"
+            className="w-full pl-4 pr-24 py-3 bg-white border border-slate-200/90 rounded-2xl text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-satublue-500/20 focus:border-satublue-600 transition-all shadow-xs"
           />
           <div className="absolute right-2">
             <Button
@@ -99,7 +111,7 @@ export const InboxView: React.FC = () => {
               variant="blue"
               size="sm"
               disabled={!titleInput.trim()}
-              className="py-1.5 px-3"
+              className="py-1.5 px-3 rounded-xl text-xs font-medium"
             >
               <Plus className="w-4 h-4 mr-1" />
               Tambah

@@ -5,7 +5,7 @@ import { Modal } from "../ui/Modal";
 import { Button } from "../ui/Button";
 import { Sparkles, Check } from "lucide-react";
 import { InboxItem } from "@/lib/types";
-import { clarifyTaskWithAI, ClarificationSuggestion } from "@/lib/ai-clarify";
+import { clarifyTaskWithAI, ClarificationSuggestion, isGeminiConfigured } from "@/lib/ai-clarify";
 
 interface ClarifyModalProps {
   isOpen: boolean;
@@ -116,17 +116,22 @@ export const ClarifyModal: React.FC<ClarifyModalProps> = ({
             ))}
           </div>
 
-          <Button
-            type="button"
-            variant="secondary"
-            size="sm"
-            onClick={handleAiClarify}
-            disabled={aiLoading || !title.trim()}
-            className="text-xs py-1 px-2.5 shrink-0"
-          >
-            <Sparkles className="w-3.5 h-3.5 mr-1 text-satublue-600" />
-            {aiLoading ? "Menganalisis..." : "Klarifikasi AI (Gratis)"}
-          </Button>
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">
+              {isGeminiConfigured() ? "Gemini 1.5 Flash (Gratis)" : "Heuristik Kognitif (Offline)"}
+            </span>
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              onClick={handleAiClarify}
+              disabled={aiLoading || !title.trim()}
+              className="text-xs py-1 px-2.5 shrink-0"
+            >
+              <Sparkles className="w-3.5 h-3.5 mr-1 text-satublue-600" />
+              {aiLoading ? "Menganalisis..." : "Klarifikasi AI (Gratis)"}
+            </Button>
+          </div>
         </div>
 
         {/* AI Suggestions Box (if generated) */}

@@ -1,5 +1,41 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <rect width="512" height="512" rx="128" fill="#111418"/>
-  <circle cx="256" cy="256" r="140" fill="none" stroke="#FBFBFC" stroke-width="28"/>
-  <rect x="238" y="160" width="36" height="192" rx="18" fill="#FBFBFC"/>
+  <defs>
+    <!-- Deep Slate-Navy Background Gradient -->
+    <linearGradient id="satubg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+
+    <!-- Vibrant Cobalt & Sky Accent Gradient -->
+    <linearGradient id="satublue" x1="176" y1="128" x2="320" y2="384" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+
+    <!-- Subtle Focus Ring Gradient -->
+    <linearGradient id="saturing" x1="96" y1="96" x2="416" y2="416" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Squircle Base -->
+  <rect width="512" height="512" rx="136" fill="url(#satubg)"/>
+  <rect x="12" y="12" width="488" height="488" rx="124" fill="none" stroke="#38BDF8" stroke-opacity="0.2" stroke-width="12"/>
+
+  <!-- Minimalist Focus Ring (Single-Thread Boundary) -->
+  <circle cx="256" cy="256" r="168" fill="none" stroke="url(#saturing)" stroke-width="16" stroke-dasharray="36 36"/>
+
+  <!-- The Iconic Monolith '1' — Geometric, modern, confident -->
+  <path
+    d="M192 196 L256 148 V364 M200 364 H312"
+    fill="none"
+    stroke="url(#satublue)"
+    stroke-width="40"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Pure Luminous Focus Point at the top-right apex -->
+  <circle cx="336" cy="152" r="20" fill="#38BDF8"/>
 </svg>

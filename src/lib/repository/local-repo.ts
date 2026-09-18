@@ -29,7 +29,7 @@ import { calculateCalibration, determineExecutionProfile, summarizeHistoricalDay
 import { aggregateVaultAndRecords, calculateMomentum } from "../domain/gamification";
 import { getCurrentDateInTimezone, processRollover } from "../domain/rollover";
 
-const STORAGE_PREFIX = "satudulu_data_v1";
+const STORAGE_PREFIX = "satudulu_data_v2";
 
 interface StorageState {
   profile: Profile;
@@ -58,6 +58,8 @@ function getInitialSeedData(): StorageState {
   const d2 = getDateOffset(-2);
   const d3 = getDateOffset(-1);
 
+  // Seed past days so analytics, records & vault have historical context,
+  // while TODAY starts completely clean and ready for real planning!
   const plans: DailyPlan[] = [
     {
       id: "plan-d1",
@@ -85,15 +87,6 @@ function getInitialSeedData(): StorageState {
       locked_at: `${d3}T08:00:00.000Z`,
       created_at: `${d3}T07:30:00.000Z`,
       updated_at: `${d3}T18:00:00.000Z`,
-    },
-    {
-      id: "plan-today",
-      user_id: userId,
-      plan_date: today,
-      status: "committed",
-      locked_at: `${today}T08:00:00.000Z`,
-      created_at: `${today}T07:30:00.000Z`,
-      updated_at: `${today}T08:00:00.000Z`,
     },
   ];
 
@@ -238,57 +231,15 @@ function getInitialSeedData(): StorageState {
       updated_at: `${d3}T15:10:00.000Z`,
     },
 
-    // Today (Berkomitmen: 1 aktif, 2 direncanakan)
-    {
-      id: "c-today-1",
-      user_id: userId,
-      daily_plan_id: "plan-today",
-      title: "Selesaikan metodologi skripsi",
-      why_it_matters: "Kirim revisi ke dosen pembimbing besok siang.",
-      priority: 1,
-      estimated_duration: 60,
-      status: "active",
-      focus_seconds: 0,
-      rollover_count: 0,
-      created_at: `${today}T07:30:00.000Z`,
-      updated_at: `${today}T08:00:00.000Z`,
-    },
-    {
-      id: "c-today-2",
-      user_id: userId,
-      daily_plan_id: "plan-today",
-      title: "Perbaiki autentikasi API",
-      why_it_matters: "Kestabilan kritis untuk deploy ke staging.",
-      priority: 2,
-      estimated_duration: 45,
-      status: "planned",
-      focus_seconds: 0,
-      rollover_count: 0,
-      created_at: `${today}T07:30:00.000Z`,
-      updated_at: `${today}T08:00:00.000Z`,
-    },
-    {
-      id: "c-today-3",
-      user_id: userId,
-      daily_plan_id: "plan-today",
-      title: "Belajar normalisasi database",
-      why_it_matters: "Ujian dalam 4 hari.",
-      priority: 3,
-      estimated_duration: 45,
-      status: "planned",
-      focus_seconds: 0,
-      rollover_count: 0,
-      created_at: `${today}T07:30:00.000Z`,
-      updated_at: `${today}T08:00:00.000Z`,
-    },
+    // Note: Today starts uncommitted so new users have a clean canvas to plan and execute immediately.
   ];
 
   const inboxItems: InboxItem[] = [
     {
       id: "inbox-1",
       user_id: userId,
-      title: "Siapkan proposal presentasi untuk klien",
-      description: "Susun linimasa, ruang lingkup, dan fase pengerjaan.",
+      title: "Rencanakan dan selesaikan komitmen pertama Anda",
+      description: "Pilih tugas ini di menu Rencana, kunci komitmen, lalu fokus eksekusi.",
       status: "active",
       created_at: `${today}T08:00:00.000Z`,
       updated_at: `${today}T08:00:00.000Z`,
@@ -296,29 +247,11 @@ function getInitialSeedData(): StorageState {
     {
       id: "inbox-2",
       user_id: userId,
-      title: "Bersihkan berkas dan aset yang tidak terpakai di codebase",
-      description: "Hapus komponen mock peninggalan prototipe lama.",
+      title: "Coba fitur Timer Melayang (PiP)",
+      description: "Buka Mode Fokus dan aktifkan PiP untuk mempertahankan fokus di atas aplikasi lain.",
       status: "active",
       created_at: `${today}T08:05:00.000Z`,
       updated_at: `${today}T08:05:00.000Z`,
-    },
-    {
-      id: "inbox-3",
-      user_id: userId,
-      title: "Beli charger laptop pengganti",
-      description: "Cari charger 65W USB-C compact.",
-      status: "active",
-      created_at: `${today}T08:10:00.000Z`,
-      updated_at: `${today}T08:10:00.000Z`,
-    },
-    {
-      id: "inbox-4",
-      user_id: userId,
-      title: "Baca makalah riset konsensus terdistribusi",
-      description: "Pelajari algoritma Raft bagian 1 sampai 4.",
-      status: "active",
-      created_at: `${today}T08:15:00.000Z`,
-      updated_at: `${today}T08:15:00.000Z`,
     },
   ];
 

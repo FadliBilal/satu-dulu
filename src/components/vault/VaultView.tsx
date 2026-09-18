@@ -38,7 +38,7 @@ export const VaultView: React.FC = () => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8 pb-28">
+    <div className="w-full max-w-3xl mx-auto py-2 sm:py-6">
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-1">

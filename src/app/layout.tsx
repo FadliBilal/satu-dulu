@@ -1,10 +1,65 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { AuthProvider } from "@/lib/supabase/auth-context";
+
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://satudulu.com";
 
 export const metadata: Metadata = {
-  title: "SATUDULU — Satu hal dalam satu waktu",
-  description: "Sistem eksekusi personal untuk mahasiswa dan pekerja pengetahuan. Tentukan apa yang penting. Kerjakan satu per satu.",
+  metadataBase: new URL(BASE_URL),
+  title: {
+    default: "SATUDULU — Satu hal dalam satu waktu",
+    template: "%s | SATUDULU",
+  },
+  description:
+    "Sistem operasi eksekusi personal anti-overwhelm untuk mahasiswa dan pekerja pengetahuan. Tentukan apa yang penting, kunci komitmen harian, dan eksekusi satu per satu tanpa rasa bersalah.",
+  keywords: [
+    "aplikasi to do list indonesia",
+    "aplikasi produktivitas",
+    "manajemen waktu",
+    "single thread execution",
+    "pomodoro timer indonesia",
+    "bimbingan skripsi",
+    "fokus kerja",
+    "deep work",
+    "pairwise comparison",
+    "task manager gratis",
+    "anti overthinking",
+    "the vault",
+    "satudulu",
+  ],
+  authors: [{ name: "SatuDulu Team", url: BASE_URL }],
+  creator: "SatuDulu",
+  publisher: "SatuDulu",
   manifest: "/manifest.json",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    url: BASE_URL,
+    siteName: "SATUDULU",
+    title: "SATUDULU — Satu hal dalam satu waktu",
+    description:
+      "Sistem operasi eksekusi personal anti-overwhelm. Tentukan apa yang penting, kunci komitmen harian, dan selesaikan satu per satu.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SATUDULU — Satu hal dalam satu waktu",
+    description:
+      "Sistem operasi eksekusi personal anti-overwhelm untuk mahasiswa dan pekerja pengetahuan.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -20,6 +75,29 @@ export const viewport: Viewport = {
   themeColor: "#FBFBFC",
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "SATUDULU",
+  applicationCategory: "ProductivityApplication",
+  operatingSystem: "All",
+  url: BASE_URL,
+  description:
+    "Sistem operasi eksekusi personal anti-overwhelm. Tentukan apa yang penting, kunci komitmen harian, dan selesaikan satu per satu tanpa distraksi.",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "IDR",
+  },
+  featureList: [
+    "Eksekusi Single-Thread (Satu tugas aktif)",
+    "Urutan Esensial via Binary Pairwise Prioritization",
+    "Timer Mengambang (Picture-in-Picture) di atas aplikasi lain",
+    "Pengalihan tugas otomatis tanpa rasa bersalah",
+    "Offline-first dengan penyimpanan lokal aman",
+  ],
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -28,10 +106,14 @@ export default function RootLayout({
   return (
     <html lang="id">
       <head>
-        <link rel="icon" href="/icon-192.png" />
+        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body className="min-h-screen bg-satubg-light text-satutext-primary font-sans antialiased">
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

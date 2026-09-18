@@ -23,7 +23,9 @@ export const PlanningView: React.FC = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [committing, setCommitting] = useState(false);
+  const [todayDate, setTodayDate] = useState("");
   const [tomorrowDate, setTomorrowDate] = useState("");
+  const [targetDateMode, setTargetDateMode] = useState<"today" | "tomorrow">("today");
   const [existingPlan, setExistingPlan] = useState<DailyPlan | null>(null);
   const [calibration, setCalibration] = useState<PlanningCalibration | null>(null);
 
@@ -41,14 +43,25 @@ export const PlanningView: React.FC = () => {
         const cal = await repo.getPlanningCalibration();
         setCalibration(cal);
 
-        // Tomorrow in user timezone
         const now = new Date();
-        now.setDate(now.getDate() + 1);
-        const tDate = getCurrentDateInTimezone(profile.timezone || "Asia/Jakarta", now);
-        setTomorrowDate(tDate);
+        const tToday = getCurrentDateInTimezone(profile.timezone || "Asia/Jakarta", now);
+        const tomorrowObj = new Date(now);
+        tomorrowObj.setDate(tomorrowObj.getDate() + 1);
+        const tTomorrow = getCurrentDateInTimezone(profile.timezone || "Asia/Jakarta", tomorrowObj);
 
-        // Check if plan already exists for tomorrow
-        const { plan, commitments } = await repo.getPlanForDate(tDate);
+        setTodayDate(tToday);
+        setTomorrowDate(tTomorrow);
+
+        // Check if today already has a committed plan
+        const { plan: todayPlan, commitments: todayCommitments } = await repo.getPlanForDate(tToday);
+        const isTodayCommitted = Boolean(todayPlan && todayPlan.status !== "draft" && todayCommitments.length > 0);
+
+        // Default to today if not yet committed, otherwise tomorrow
+        const initialMode = isTodayCommitted ? "tomorrow" : "today";
+        setTargetDateMode(initialMode);
+
+        const initialTargetDate = initialMode === "today" ? tToday : tTomorrow;
+        const { plan, commitments } = await repo.getPlanForDate(initialTargetDate);
         setExistingPlan(plan);
 
         // Gather inbox items & carried items
@@ -87,7 +100,7 @@ export const PlanningView: React.FC = () => {
         if (commitments.length > 0) {
           setSelectedIds(commitments.map((c) => c.id));
         } else if (allCandidates.length > 0) {
-          // Default pick top 2-3 candidates to align with adaptive calibration
+          // Default pick top 1-3 candidates
           const defaultCount = Math.min(allCandidates.length, cal.recommendedRange[0] || 3);
           setSelectedIds(allCandidates.slice(0, defaultCount).map((c) => c.id));
         }
@@ -97,6 +110,17 @@ export const PlanningView: React.FC = () => {
     }
     loadPlanningData();
   }, []);
+
+  const handleSwitchTargetMode = async (mode: "today" | "tomorrow") => {
+    setTargetDateMode(mode);
+    const targetDate = mode === "today" ? todayDate : tomorrowDate;
+    const repo = getRepository();
+    const { plan, commitments } = await repo.getPlanForDate(targetDate);
+    setExistingPlan(plan);
+    if (commitments.length > 0) {
+      setSelectedIds(commitments.map((c) => c.id));
+    }
+  };
 
   const toggleCandidate = (id: string) => {
     if (selectedIds.includes(id)) {
@@ -126,9 +150,9 @@ export const PlanningView: React.FC = () => {
     setSelectedIds([...reordered]);
   };
 
-  const handleCommitTomorrow = async () => {
+  const handleCommitPlan = async () => {
     if (selectedIds.length === 0) {
-      alert("Silakan pilih setidaknya 1 komitmen untuk besok.");
+      alert("Silakan pilih setidaknya 1 komitmen.");
       return;
     }
 
@@ -136,10 +160,11 @@ export const PlanningView: React.FC = () => {
     try {
       const repo = getRepository();
       const profile = await repo.getProfile();
+      const targetDate = targetDateMode === "today" ? todayDate : tomorrowDate;
       let plan = existingPlan;
 
       if (!plan) {
-        const created = await repo.createDraftPlan(tomorrowDate);
+        const created = await repo.createDraftPlan(targetDate);
         plan = created.plan;
       }
 
@@ -176,7 +201,7 @@ export const PlanningView: React.FC = () => {
   if (loading) {
     return (
       <div className="py-20 text-center text-xs text-slate-400 font-mono">
-        Memuat ruang perencanaan besok...
+        Memuat ruang perencanaan...
       </div>
     );
   }
@@ -185,18 +210,46 @@ export const PlanningView: React.FC = () => {
     .map((id) => candidates.find((c) => c.id === id)!)
     .filter(Boolean);
 
+  const activeDate = targetDateMode === "today" ? todayDate : tomorrowDate;
+
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8 pb-36">
+    <div className="w-full max-w-3xl mx-auto py-2 sm:py-6">
+      {/* Date Switcher Tabs */}
+      <div className="inline-flex p-1 bg-slate-100/90 rounded-xl border border-slate-200/80 mb-4">
+        <button
+          type="button"
+          onClick={() => handleSwitchTargetMode("today")}
+          className={`px-3 py-1 text-xs font-medium rounded-lg transition-all ${
+            targetDateMode === "today"
+              ? "bg-white text-slate-900 shadow-xs font-semibold"
+              : "text-slate-500 hover:text-slate-900"
+          }`}
+        >
+          Hari Ini ({todayDate})
+        </button>
+        <button
+          type="button"
+          onClick={() => handleSwitchTargetMode("tomorrow")}
+          className={`px-3 py-1 text-xs font-medium rounded-lg transition-all ${
+            targetDateMode === "tomorrow"
+              ? "bg-white text-slate-900 shadow-xs font-semibold"
+              : "text-slate-500 hover:text-slate-900"
+          }`}
+        >
+          Besok ({tomorrowDate})
+        </button>
+      </div>
+
       {/* Header */}
       <div className="mb-6">
         <span className="text-[11px] font-semibold text-satublue-700 tracking-wider uppercase font-mono">
-          PERENCANAAN BESOK • {tomorrowDate}
+          PERENCANAAN • {activeDate}
         </span>
         <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-slate-900 mt-1">
-          Apa yang penting besok?
+          {targetDateMode === "today" ? "Apa yang penting hari ini?" : "Apa yang penting besok?"}
         </h1>
         <p className="text-xs text-slate-500 mt-1">
-          Pilih apa yang bersedia Anda eksekusi secara realistis. Angka 6 adalah batas aman, bukan kuota wajib.
+          Pilih 1–4 komitmen realistis. Angka 6 adalah batas aman, bukan target.
         </p>
       </div>
 
@@ -243,7 +296,7 @@ export const PlanningView: React.FC = () => {
       <div className="mb-8">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
-            <span>Komitmen Besok</span>
+            <span>{targetDateMode === "today" ? "Komitmen Hari Ini" : "Komitmen Besok"}</span>
             <span className="text-xs font-normal text-satublue-700 bg-satublue-50 px-2 py-0.5 rounded font-mono">
               {selectedIds.length} dari maks 6
             </span>
@@ -395,11 +448,15 @@ export const PlanningView: React.FC = () => {
           <Button
             size="md"
             variant="blue"
-            onClick={handleCommitTomorrow}
+            onClick={handleCommitPlan}
             disabled={selectedIds.length === 0 || committing}
             className="px-6 shadow-sm shrink-0"
           >
-            {committing ? "Memproses..." : "KOMITMEN UNTUK BESOK"}
+            {committing
+              ? "Memproses..."
+              : targetDateMode === "today"
+              ? "KOMITMEN HARI INI"
+              : "KOMITMEN UNTUK BESOK"}
           </Button>
         </div>
       </div>
