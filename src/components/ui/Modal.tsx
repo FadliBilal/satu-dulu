@@ -55,27 +55,27 @@ export const Modal: React.FC<ModalProps> = ({
       {/* Dialog surface */}
       <div
         className={clsx(
-          "relative w-full bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-10 transition-all transform duration-200",
+          "relative w-full bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-800 text-slate-900 dark:text-slate-100 overflow-hidden z-10 transition-all transform duration-200",
           maxWidthStyles[maxWidth]
         )}
       >
         {(title || description) && (
-          <div className="px-6 pt-6 pb-4 border-b border-gray-100 flex items-start justify-between">
+          <div className="px-6 pt-6 pb-4 border-b border-gray-100 dark:border-slate-800 flex items-start justify-between">
             <div>
               {title && (
-                <h3 className="text-lg font-semibold text-satutext-primary tracking-tight">
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 tracking-tight">
                   {title}
                 </h3>
               )}
               {description && (
-                <p className="text-xs text-satutext-secondary mt-1">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                   {description}
                 </p>
               )}
             </div>
             <button
               onClick={onClose}
-              className="text-satutext-muted hover:text-satutext-primary p-1 rounded-md transition-colors"
+              className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 p-1 rounded-md transition-colors"
               aria-label="Close dialog"
             >
               <X className="w-5 h-5" />

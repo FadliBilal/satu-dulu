@@ -1,6 +1,6 @@
 import React from "react";
 
-interface LogoProps {
+export interface LogoProps {
   className?: string;
   size?: number;
   showText?: boolean;
