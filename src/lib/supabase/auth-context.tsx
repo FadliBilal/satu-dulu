@@ -56,6 +56,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return;
     }
 
+    // Check if URL hash or search contains recovery tokens when not on /reset-password
+    if (typeof window !== "undefined") {
+      const hash = window.location.hash || "";
+      const search = window.location.search || "";
+      if (
+        (hash.includes("type=recovery") || search.includes("type=recovery")) &&
+        window.location.pathname !== "/reset-password"
+      ) {
+        window.location.replace(`/reset-password${search}${hash}`);
+        return;
+      }
+    }
+
     // 1. Initial session load
     client.auth.getSession().then(({ data: { session: currentSession } }) => {
       setSession(currentSession);
@@ -71,9 +84,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsLoading(false);
     });
 
-    // 2. Listen to auth state changes (login, logout, token refresh)
+    // 2. Listen to auth state changes (login, logout, token refresh, password recovery)
     const { data: { subscription } } = client.auth.onAuthStateChange(
-      (_event, updatedSession) => {
+      (event, updatedSession) => {
+        if (event === "PASSWORD_RECOVERY") {
+          if (typeof window !== "undefined" && window.location.pathname !== "/reset-password") {
+            window.location.replace(`/reset-password${window.location.search}${window.location.hash}`);
+            return;
+          }
+        }
         setSession(updatedSession);
         setUser(updatedSession?.user ?? null);
         if (updatedSession?.user) {

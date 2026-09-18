@@ -110,7 +110,7 @@ export default function RootLayout({
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem("satudulu_theme");var d=window.matchMedia("(prefers-color-scheme: dark)").matches;if(t==="dark"||(t==="system"&&d)){document.documentElement.classList.add("dark")}else{document.documentElement.classList.remove("dark")}}catch(e){}})();`,
+            __html: `(function(){try{var t=localStorage.getItem("satudulu_theme");var d=window.matchMedia("(prefers-color-scheme: dark)").matches;if(t==="dark"||(t==="system"&&d)){document.documentElement.classList.add("dark")}else{document.documentElement.classList.remove("dark")};var h=window.location.hash||"";var s=window.location.search||"";if((h.indexOf("type=recovery")!==-1||s.indexOf("type=recovery")!==-1)&&window.location.pathname!=="/reset-password"){window.location.replace("/reset-password"+s+h);}}catch(e){}})();`,
           }}
         />
         <script

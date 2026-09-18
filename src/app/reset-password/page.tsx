@@ -48,6 +48,24 @@ export default function ResetPasswordPage() {
 
         // 2. Check hash fragments (implicit flow)
         if (window.location.hash && window.location.hash.includes("access_token")) {
+          try {
+            const hashParams = new URLSearchParams(window.location.hash.substring(1));
+            const accessToken = hashParams.get("access_token");
+            const refreshToken = hashParams.get("refresh_token");
+            if (accessToken && refreshToken) {
+              const { data, error } = await client.auth.setSession({
+                access_token: accessToken,
+                refresh_token: refreshToken,
+              });
+              if (!error && data.session) {
+                setIsRecoverySessionReady(true);
+                setInitializing(false);
+                return;
+              }
+            }
+          } catch (err) {
+            console.warn("Gagal set session dari hash:", err);
+          }
           setIsRecoverySessionReady(true);
           setInitializing(false);
           return;
