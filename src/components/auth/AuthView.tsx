@@ -112,7 +112,9 @@ export const AuthView: React.FC<AuthViewProps> = ({ onSuccess, isModal = false }
     try {
       const { error, user, session } = await signUpWithPassword(cleanEmail, password, cleanUsername);
       if (error) {
-        if (error.message.includes("already registered")) {
+        if (error.message.toLowerCase().includes("rate limit")) {
+          setErrorMsg("Batas pengiriman email verifikasi Supabase per jam telah tercapai. Harap tunggu beberapa saat.");
+        } else if (error.message.includes("already registered")) {
           setErrorMsg("Email ini sudah terdaftar. Silakan pilih tab Masuk.");
         } else {
           setErrorMsg(error.message || "Gagal mendaftar akun baru.");
@@ -161,14 +163,26 @@ export const AuthView: React.FC<AuthViewProps> = ({ onSuccess, isModal = false }
     try {
       const { error } = await resetPasswordForEmail(cleanEmail);
       if (error) {
-        setErrorMsg(error.message || "Gagal mengirim tautan pemulihan kata sandi.");
+        if (error.message.toLowerCase().includes("rate limit")) {
+          setErrorMsg(
+            "Batas pengiriman email Supabase bawaan (3-4 email/jam) telah tercapai untuk mencegah spam. Harap tunggu beberapa menit sebelum meminta tautan baru, atau gunakan tautan yang sudah berhasil masuk ke inbox/spam Anda sebelumnya."
+          );
+        } else {
+          setErrorMsg(error.message || "Gagal mengirim tautan pemulihan kata sandi.");
+        }
       } else {
         setSuccessMsg(
           "Tautan pemulihan kata sandi telah dikirim! Silakan periksa kotak masuk atau folder spam email Anda."
         );
       }
     } catch (err: any) {
-      setErrorMsg(err?.message || "Terjadi kesalahan saat memproses permintaan.");
+      if (err?.message?.toLowerCase().includes("rate limit")) {
+        setErrorMsg(
+          "Batas pengiriman email Supabase bawaan (3-4 email/jam) telah tercapai. Harap tunggu beberapa menit, atau gunakan tautan yang sudah dikirimkan sebelumnya."
+        );
+      } else {
+        setErrorMsg(err?.message || "Terjadi kesalahan saat memproses permintaan.");
+      }
     } finally {
       setLoading(false);
     }
